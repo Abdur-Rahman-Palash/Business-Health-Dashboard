@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Filter, RefreshCw, Edit3 } from 'lucide-react';
 import InsightCard from './InsightCard';
@@ -21,26 +21,20 @@ const InsightEngine: React.FC<InsightEngineProps> = ({
   onRefreshInsights,
   className = ''
 }) => {
-  const [filteredInsights, setFilteredInsights] = useState<Insight[]>(insights);
   const [selectedPriority, setSelectedPriority] = useState<string>('all');
   const [selectedKPI, setSelectedKPI] = useState<string>('all');
   const [viewMode, setViewMode] = useState<'cards' | 'compact'>('cards');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  useEffect(() => {
+  const filteredInsights = useMemo(() => {
     let filtered = insights;
-
-    // Filter by priority
     if (selectedPriority !== 'all') {
       filtered = filtered.filter(insight => insight.priority === selectedPriority);
     }
-
-    // Filter by KPI
     if (selectedKPI !== 'all') {
       filtered = filtered.filter(insight => insight.kpiId === selectedKPI);
     }
-
-    setFilteredInsights(filtered);
+    return filtered;
   }, [insights, selectedPriority, selectedKPI]);
 
   const handleRefresh = async () => {
@@ -89,7 +83,7 @@ const InsightEngine: React.FC<InsightEngineProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Business Insights
@@ -112,7 +106,7 @@ const InsightEngine: React.FC<InsightEngineProps> = ({
         </div>
 
         {/* Priority Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">

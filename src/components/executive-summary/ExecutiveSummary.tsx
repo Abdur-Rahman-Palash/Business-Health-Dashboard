@@ -73,7 +73,7 @@ ${summary.narrative}
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold mb-2">Executive Summary</h1>
             <div className="flex items-center gap-4 text-blue-100">
@@ -204,7 +204,7 @@ ${summary.narrative}
 
       {/* Footer */}
       <div className="bg-gray-100 px-6 py-4 border-t border-gray-200">
-        <div className="flex items-center justify-between text-sm text-gray-600">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-2 text-sm text-gray-600">
           <div>
             This summary is generated automatically based on current business metrics and insights.
           </div>

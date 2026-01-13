@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, Brain, Shield, Target, FileText, RefreshCw } from 'lucide-react';
+import { BarChart3, Brain, Shield, Target, FileText, RefreshCw, Menu } from 'lucide-react';
 
 // Import components
 import KPIMeaningLayer from '@/components/kpi-meaning/KPIMeaningLayer';
@@ -20,6 +20,7 @@ const ExecutiveDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>('overview');
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     loadDashboardData();
@@ -30,7 +31,10 @@ const ExecutiveDashboard: React.FC = () => {
       setLoading(true);
       const response = await mockAPI.getDashboardData();
       if (response.success) {
-        setDashboardData(response.data);
+        setDashboardData({
+          ...response.data,
+          lastUpdated: response.timestamp
+        });
       } else {
         setError(response.message || 'Failed to load dashboard data');
       }
@@ -98,7 +102,7 @@ const ExecutiveDashboard: React.FC = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 h-auto sm:h-16">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
@@ -119,6 +123,13 @@ const ExecutiveDashboard: React.FC = () => {
                 <RefreshCw className="w-4 h-4" />
                 Refresh
               </button>
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                aria-label="Open navigation menu"
+              >
+                <Menu className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
@@ -127,7 +138,7 @@ const ExecutiveDashboard: React.FC = () => {
       {/* Navigation Tabs */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
+          <div className="hidden lg:flex gap-8">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -148,6 +159,56 @@ const ExecutiveDashboard: React.FC = () => {
           </div>
         </div>
       </nav>
+
+      {isMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-50 bg-black/40"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 25 }}
+            className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white shadow-xl border-l border-gray-200 p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Navigation</h2>
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm"
+              >
+                Close
+              </button>
+            </div>
+            <div className="space-y-2">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg border transition-colors ${
+                      isActive
+                        ? 'border-blue-500 bg-blue-50 text-blue-700'
+                        : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="text-sm font-medium">{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

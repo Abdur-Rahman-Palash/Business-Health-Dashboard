@@ -94,7 +94,7 @@ const BusinessHealthDashboard: React.FC<BusinessHealthDashboardProps> = ({
         transition={{ duration: 0.5, delay: 0.1 }}
         className={`rounded-lg border-2 ${getHealthScoreBg(businessHealthScore.overall)} p-6`}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
               <Shield className="w-8 h-8 text-gray-700" />
@@ -118,7 +118,7 @@ const BusinessHealthDashboard: React.FC<BusinessHealthDashboardProps> = ({
         </div>
 
         {/* Category Scores */}
-        <div className="grid grid-cols-3 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
           <div className="text-center">
             <div className="text-2xl font-semibold text-blue-600">
               {businessHealthScore.financial}

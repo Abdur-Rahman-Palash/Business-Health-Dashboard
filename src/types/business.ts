@@ -124,10 +124,10 @@ export interface APIResponse<T> {
   timestamp: string;
 }
 
-export interface KPIDataResponse extends APIResponse<KPIData[]> {}
-export interface InsightsResponse extends APIResponse<Insight[]> {}
-export interface RecommendationsResponse extends APIResponse<Recommendation[]> {}
-export interface ExecutiveSummaryResponse extends APIResponse<ExecutiveSummary> {}
+export type KPIDataResponse = APIResponse<KPIData[]>;
+export type InsightsResponse = APIResponse<Insight[]>;
+export type RecommendationsResponse = APIResponse<Recommendation[]>;
+export type ExecutiveSummaryResponse = APIResponse<ExecutiveSummary>;
 
 // Component Props Types
 export interface KPICardProps {

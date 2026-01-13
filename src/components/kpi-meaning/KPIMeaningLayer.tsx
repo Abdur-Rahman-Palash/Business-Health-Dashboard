@@ -84,7 +84,7 @@ const KPIMeaningLayer: React.FC<KPIMeaningLayerProps> = ({
           <div>
             <h4 className="font-medium text-blue-800 mb-1">Financial Health</h4>
             <p className="text-blue-700">
-              Revenue, growth, and profitability metrics indicate your business's financial sustainability and growth capacity.
+              Revenue, growth, and profitability metrics indicate your business&#39;s financial sustainability and growth capacity.
             </p>
           </div>
           <div>
