@@ -129,6 +129,42 @@ export const insightRules: InsightRule[] = [
       action: 'Scale successful growth initiatives, invest in capacity expansion, and protect market position from competitors.',
       priority: 'medium'
     })
+  },
+
+  {
+    id: 'high-churn-risk',
+    name: 'High Churn Risk',
+    kpiId: 'churn-rate',
+    priority: 'high',
+    condition: (data: KPIData) => {
+      return data.currentValue > 5;
+    },
+    generateInsight: (data: KPIData) => ({
+      kpiId: data.id,
+      title: 'Churn Rate Alert',
+      observation: `Churn rate has risen to ${data.currentValue}%, which is above the healthy threshold.`,
+      businessImpact: 'Losing customers at this rate depletes revenue and increases the pressure on new customer acquisition to maintain growth.',
+      action: 'Launch a targeted retention campaign immediately. Interview churned customers to identify root causes.',
+      priority: 'high'
+    })
+  },
+
+  {
+    id: 'clv-stagnation',
+    name: 'CLV Stagnation',
+    kpiId: 'clv',
+    priority: 'medium',
+    condition: (data: KPIData) => {
+      return data.trend === 'down' || data.trend === 'stable';
+    },
+    generateInsight: (data: KPIData) => ({
+      kpiId: data.id,
+      title: 'Lifetime Value Stagnation',
+      observation: `Customer Lifetime Value is ${data.trend === 'down' ? 'declining' : 'flat'}, currently at $${data.currentValue}.`,
+      businessImpact: 'Stagnant CLV limits your ability to spend on acquisition and reduces overall profitability per customer.',
+      action: 'Focus on upselling and cross-selling to existing customer base. Review pricing tiers and loyalty programs.',
+      priority: 'medium'
+    })
   }
 ];
 

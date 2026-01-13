@@ -19,14 +19,14 @@ import { generateInsights } from '@/lib/business-logic/insight-rules';
 // Simulates real backend API with realistic business data
 
 // Mock KPI Data with realistic business scenarios
-const mockKPIData: KPIData[] = [
+// We calculate health status dynamically based on thresholds to ensure consistency
+const rawKPIData: Omit<KPIData, 'healthStatus'>[] = [
   {
     id: 'revenue',
     currentValue: 850000,
     previousValue: 920000,
     targetValue: 1000000,
     trend: 'down',
-    healthStatus: 'warning',
     lastUpdated: '2026-01-13T05:00:00Z',
     historicalValues: [
       { period: '2024-08', value: 880000 },
@@ -42,7 +42,6 @@ const mockKPIData: KPIData[] = [
     previousValue: 12.3,
     targetValue: 15.0,
     trend: 'down',
-    healthStatus: 'warning',
     lastUpdated: '2026-01-13T05:00:00Z',
     historicalValues: [
       { period: '2024-08', value: 15.2 },
@@ -58,7 +57,6 @@ const mockKPIData: KPIData[] = [
     previousValue: 14.2,
     targetValue: 18.0,
     trend: 'down',
-    healthStatus: 'warning',
     lastUpdated: '2026-01-13T05:00:00Z',
     historicalValues: [
       { period: '2024-08', value: 15.1 },
@@ -74,7 +72,6 @@ const mockKPIData: KPIData[] = [
     previousValue: 85.8,
     targetValue: 75.0,
     trend: 'up',
-    healthStatus: 'warning',
     lastUpdated: '2026-01-13T05:00:00Z',
     historicalValues: [
       { period: '2024-08', value: 84.9 },
@@ -90,7 +87,6 @@ const mockKPIData: KPIData[] = [
     previousValue: 78.3,
     targetValue: 85.0,
     trend: 'down',
-    healthStatus: 'warning',
     lastUpdated: '2026-01-13T05:00:00Z',
     historicalValues: [
       { period: '2024-08', value: 82.1 },
@@ -99,8 +95,43 @@ const mockKPIData: KPIData[] = [
       { period: '2024-11', value: 75.8 },
       { period: '2024-12', value: 72.5 }
     ]
+  },
+  {
+    id: 'churn-rate',
+    currentValue: 6.2,
+    previousValue: 5.8,
+    targetValue: 5.0,
+    trend: 'up',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 5.1 },
+      { period: '2024-09', value: 5.4 },
+      { period: '2024-10', value: 5.8 },
+      { period: '2024-11', value: 6.0 },
+      { period: '2024-12', value: 6.2 }
+    ]
+  },
+  {
+    id: 'clv',
+    currentValue: 4200,
+    previousValue: 4250,
+    targetValue: 5000,
+    trend: 'stable',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 4100 },
+      { period: '2024-09', value: 4150 },
+      { period: '2024-10', value: 4200 },
+      { period: '2024-11', value: 4250 },
+      { period: '2024-12', value: 4200 }
+    ]
   }
 ];
+
+const mockKPIData: KPIData[] = rawKPIData.map(kpi => ({
+  ...kpi,
+  healthStatus: calculateHealthStatus(kpi.id, kpi.currentValue)
+}));
 
 // Generate insights from mock KPI data
 const mockInsights: Insight[] = generateInsights(mockKPIData);
@@ -134,6 +165,16 @@ const mockRiskIndicators: RiskIndicator[] = [
     title: 'Customer Satisfaction Risk',
     explanation: 'Customer health score below 75% indicates potential churn risk and brand reputation impact.',
     thresholdLogic: 'Customer health below 75% triggers warning status',
+    consecutivePeriods: 1,
+    severity: 'high'
+  },
+  {
+    id: 'risk-4',
+    kpiId: 'churn-rate',
+    status: 'warning',
+    title: 'Elevated Churn Rate',
+    explanation: 'Churn rate has exceeded the 5% threshold, indicating increasing customer attrition.',
+    thresholdLogic: 'Churn rate > 5% triggers warning status',
     consecutivePeriods: 1,
     severity: 'high'
   }
@@ -184,13 +225,15 @@ const mockBusinessHealthScore: BusinessHealthScore = {
   overall: 68,
   financial: 65,
   operational: 70,
-  customer: 72,
+  customer: 68,
   status: 'warning',
   factors: [
-    { category: 'Revenue Growth', score: 55, weight: 0.3 },
-    { category: 'Profitability', score: 65, weight: 0.25 },
+    { category: 'Revenue Growth', score: 55, weight: 0.2 },
+    { category: 'Profitability', score: 65, weight: 0.2 },
     { category: 'Cost Efficiency', score: 70, weight: 0.2 },
-    { category: 'Customer Satisfaction', score: 72, weight: 0.25 }
+    { category: 'Customer Satisfaction', score: 72, weight: 0.2 },
+    { category: 'Churn Management', score: 58, weight: 0.1 },
+    { category: 'Customer Lifetime Value', score: 75, weight: 0.1 }
   ]
 };
 

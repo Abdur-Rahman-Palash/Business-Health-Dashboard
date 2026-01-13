@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart3, Brain, Shield, Target, FileText, RefreshCw, Menu } from 'lucide-react';
+import { BarChart3, Brain, Shield, Target, FileText, RefreshCw, Menu, Activity } from 'lucide-react';
 
 // Import components
 import KPIMeaningLayer from '@/components/kpi-meaning/KPIMeaningLayer';
@@ -10,6 +10,7 @@ import InsightEngine from '@/components/insights/InsightEngine';
 import BusinessHealthDashboard from '@/components/business-health/BusinessHealthDashboard';
 import ExecutiveRecommendationsPanel from '@/components/recommendations/ExecutiveRecommendationsPanel';
 import ExecutiveSummary from '@/components/executive-summary/ExecutiveSummary';
+import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard';
 
 // Import services and types
 import { mockAPI } from '@/services/mock-api';
@@ -62,6 +63,7 @@ const ExecutiveDashboard: React.FC = () => {
   const tabs = [
     { id: 'overview', label: 'Overview', icon: BarChart3 },
     { id: 'kpi-meaning', label: 'KPI Meaning', icon: Brain },
+    { id: 'analytics', label: 'Analytics', icon: Activity },
     { id: 'insights', label: 'Insights', icon: Target },
     { id: 'health', label: 'Business Health', icon: Shield },
     { id: 'recommendations', label: 'Recommendations', icon: Target },
@@ -324,6 +326,10 @@ const ExecutiveDashboard: React.FC = () => {
 
           {activeTab === 'kpi-meaning' && (
             <KPIMeaningLayer kpis={dashboardData.kpis} />
+          )}
+
+          {activeTab === 'analytics' && (
+            <AnalyticsDashboard kpis={dashboardData.kpis} />
           )}
 
           {activeTab === 'insights' && (

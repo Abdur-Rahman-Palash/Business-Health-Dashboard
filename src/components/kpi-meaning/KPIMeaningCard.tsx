@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, Info, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { KPIData, KPIDefinition, HealthStatus, TrendDirection } from '@/types/business';
 import { getKPIDefinition } from '@/lib/business-logic/kpi-definitions';
+import TrendChart from '../charts/TrendChart';
 
 interface KPIMeaningCardProps {
   kpi: KPIData;
@@ -165,11 +166,18 @@ const KPIMeaningCard: React.FC<KPIMeaningCardProps> = ({
                   </div>
                 </div>
 
-                {/* Historical Context */}
+                {/* Historical Context & Chart */}
                 {kpi.historicalValues.length > 0 && (
                   <div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-4">
+                      Performance Trend
+                    </h4>
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+                      <TrendChart kpi={kpi} height={200} />
+                    </div>
+                    
                     <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                      Recent Performance
+                      Recent Values
                     </h4>
                     <div className="flex gap-2 flex-wrap">
                       {kpi.historicalValues.slice(-3).map((period, index) => (

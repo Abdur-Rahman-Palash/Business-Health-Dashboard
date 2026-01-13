@@ -42,6 +42,22 @@ export const thresholdRules: Record<KPIId, ThresholdRule> = {
     good: { min: 70, max: 84.9 }, // 70-84.9
     warning: { min: 50, max: 69.9 }, // 50-69.9
     critical: { max: 49.9 } // <50
+  },
+
+  'churn-rate': {
+    kpiId: 'churn-rate',
+    excellent: { max: 2 }, // <2%
+    good: { min: 2.1, max: 5 }, // 2.1-5%
+    warning: { min: 5.1, max: 10 }, // 5.1-10%
+    critical: { min: 10.1 } // >10%
+  },
+
+  'clv': {
+    kpiId: 'clv',
+    excellent: { min: 10000 }, // $10k+
+    good: { min: 5000, max: 9999 }, // $5k-$9.9k
+    warning: { min: 2000, max: 4999 }, // $2k-$4.9k
+    critical: { max: 1999 } // <$2k
   }
 };
 

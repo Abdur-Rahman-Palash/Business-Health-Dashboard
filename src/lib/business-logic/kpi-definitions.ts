@@ -62,6 +62,30 @@ export const kpiDefinitions: Record<KPIId, KPIDefinition> = {
     badValueIndicator: 'Below 60 indicates at-risk customers likely to churn and damage your reputation.',
     unit: 'Score (0-100)',
     category: 'customer'
+  },
+  
+  'churn-rate': {
+    id: 'churn-rate',
+    name: 'Churn Rate',
+    description: 'Percentage of customers who stopped using your product or service during a given period.',
+    businessMeaning: 'The rate at which you are losing customers. It directly reflects product value, customer satisfaction, and competitive pressure.',
+    whyItMatters: 'High churn kills growth. It is much more expensive to acquire new customers than to retain existing ones. Reducing churn is the fastest way to increase profitability.',
+    goodValueIndicator: 'Below 5% annual churn (for B2B) or 2% monthly (for B2C) is generally healthy.',
+    badValueIndicator: 'Rising churn trend or rates above 10% indicate serious product-market fit or service issues.',
+    unit: '%',
+    category: 'customer'
+  },
+
+  'clv': {
+    id: 'clv',
+    name: 'Customer Lifetime Value',
+    description: 'Total revenue a business can expect from a single customer account throughout the business relationship.',
+    businessMeaning: 'How much a customer is worth to your business over time. This helps determine how much you should spend to acquire them.',
+    whyItMatters: 'CLV dictates your allowable Customer Acquisition Cost (CAC). Increasing CLV means you can spend more to grow and improves long-term profitability.',
+    goodValueIndicator: 'CLV should be at least 3x your Customer Acquisition Cost (CAC). Rising CLV shows better retention and upsell success.',
+    badValueIndicator: 'CLV:CAC ratio below 1:1 means you are losing money on every new customer.',
+    unit: 'USD',
+    category: 'customer'
   }
 };
 

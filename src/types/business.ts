@@ -6,7 +6,9 @@ export type KPIId =
   | 'revenue-growth' 
   | 'profit-margin' 
   | 'expense-ratio' 
-  | 'customer-health';
+  | 'customer-health'
+  | 'churn-rate'
+  | 'clv';
 
 export type HealthStatus = 'excellent' | 'good' | 'warning' | 'critical';
 
