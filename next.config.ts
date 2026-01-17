@@ -1,17 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
+  reactCompiler: false,
   images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-      },
-    ],
+    unoptimized: true,
   },
-  trailingSlash: true,
-  assetPrefix: undefined,
+  trailingSlash: false,
 };
 
 export default nextConfig;
