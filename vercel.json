@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "standalone_dashboard.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "src": "/api/health",
+      "dest": "/api/health",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/data",
+      "dest": "/api/data",
+      "methods": ["GET"]
+    }
+  ],
+  "env": {
+    "PORT": "8500"
+  }
+}

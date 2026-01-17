@@ -86,6 +86,114 @@ export const kpiDefinitions: Record<KPIId, KPIDefinition> = {
     badValueIndicator: 'CLV:CAC ratio below 1:1 means you are losing money on every new customer.',
     unit: 'USD',
     category: 'customer'
+  },
+
+  'cac': {
+    id: 'cac',
+    name: 'Customer Acquisition Cost',
+    description: 'Total cost of sales and marketing to acquire a single new customer.',
+    businessMeaning: 'How much you spend to convince a customer to buy your product/service. This directly impacts your profitability.',
+    whyItMatters: 'High CAC makes growth expensive and unsustainable. Lower CAC means more efficient marketing and better unit economics.',
+    goodValueIndicator: 'CAC should be less than 1/3 of Customer Lifetime Value (CLV). Stable or declining CAC indicates efficient acquisition.',
+    badValueIndicator: 'Rising CAC or CAC:CAC ratio above 1:3 indicates inefficient marketing or competitive pressure.',
+    unit: 'USD',
+    category: 'financial'
+  },
+
+  'ltv-cac-ratio': {
+    id: 'ltv-cac-ratio',
+    name: 'LTV:CAC Ratio',
+    description: 'Ratio of Customer Lifetime Value to Customer Acquisition Cost.',
+    businessMeaning: 'How much value you get for each dollar spent acquiring customers. This measures the sustainability of your growth model.',
+    whyItMatters: 'The LTV:CAC ratio determines if your business model is fundamentally viable. It guides investment decisions and growth strategy.',
+    goodValueIndicator: 'Ratio of 3:1 or higher is considered healthy. Shows sustainable unit economics and profitable growth.',
+    badValueIndicator: 'Ratio below 2:1 indicates unsustainable acquisition costs and potential business model issues.',
+    unit: 'Ratio',
+    category: 'financial'
+  },
+
+  'mrr': {
+    id: 'mrr',
+    name: 'Monthly Recurring Revenue',
+    description: 'Predictable revenue generated each month from subscription-based customers.',
+    businessMeaning: 'The stable, predictable portion of your revenue that you can count on each month from ongoing subscriptions.',
+    whyItMatters: 'MRR indicates business stability and growth momentum. It helps with financial planning, investor relations, and resource allocation.',
+    goodValueIndicator: 'Consistent month-over-month growth with low volatility. Shows healthy subscription business and customer retention.',
+    badValueIndicator: 'Declining MRR or high volatility indicates churn issues, pricing problems, or market challenges.',
+    unit: 'USD',
+    category: 'financial'
+  },
+
+  'arr': {
+    id: 'arr',
+    name: 'Annual Recurring Revenue',
+    description: 'Total recurring revenue normalized to an annual basis from all subscription customers.',
+    businessMeaning: 'The total value of your subscription contracts expressed on an annual basis. This shows the scale of your recurring business.',
+    whyItMatters: 'ARR is the primary metric for subscription businesses, indicating long-term revenue potential and business scale.',
+    goodValueIndicator: 'Strong ARR growth with low churn indicates healthy subscription business and customer satisfaction.',
+    badValueIndicator: 'Stagnant or declining ARR signals market saturation, competitive pressure, or product issues.',
+    unit: 'USD',
+    category: 'financial'
+  },
+
+  'nps': {
+    id: 'nps',
+    name: 'Net Promoter Score',
+    description: 'Measure of customer loyalty and willingness to recommend your company to others.',
+    businessMeaning: 'How likely your customers are to recommend your business to friends, family, or colleagues. This predicts organic growth.',
+    whyItMatters: 'NPS correlates with revenue growth and customer retention. High NPS customers become brand advocates and reduce acquisition costs.',
+    goodValueIndicator: 'Score above 50 indicates excellent customer loyalty and strong word-of-mouth potential.',
+    badValueIndicator: 'Score below 0 indicates more detractors than promoters, suggesting serious customer satisfaction issues.',
+    unit: 'Score (-100 to 100)',
+    category: 'customer'
+  },
+
+  'csat': {
+    id: 'csat',
+    name: 'Customer Satisfaction Score',
+    description: 'Direct measure of customer satisfaction with specific interactions or overall experience.',
+    businessMeaning: 'How satisfied customers are with your products, services, or interactions. This indicates immediate customer experience quality.',
+    whyItMatters: 'CSAT predicts retention, reduces support costs, and identifies service improvement opportunities. High satisfaction drives repeat business.',
+    goodValueIndicator: 'Score above 80% indicates satisfied customers who are likely to stay and recommend your business.',
+    badValueIndicator: 'Score below 70% indicates dissatisfied customers at risk of churn.',
+    unit: '%',
+    category: 'customer'
+  },
+
+  'operational-efficiency': {
+    id: 'operational-efficiency',
+    name: 'Operational Efficiency',
+    description: 'Ratio of output to input in business operations, measuring process effectiveness.',
+    businessMeaning: 'How efficiently your business converts resources (time, money, people) into value. This indicates operational excellence.',
+    whyItMatters: 'High efficiency reduces costs, improves margins, and enables competitive pricing. It directly impacts profitability and scalability.',
+    goodValueIndicator: 'Score above 75% indicates streamlined operations and effective resource utilization.',
+    badValueIndicator: 'Score below 60% suggests operational waste, process issues, or technology gaps.',
+    unit: 'Score (0-100)',
+    category: 'operational'
+  },
+
+  'employee-satisfaction': {
+    id: 'employee-satisfaction',
+    name: 'Employee Satisfaction Score',
+    description: 'Measure of how happy and engaged employees are with their work and company.',
+    businessMeaning: 'How satisfied your team is with their jobs, management, and company culture. This predicts retention and productivity.',
+    whyItMatters: 'Happy employees provide better customer service, innovate more, and stay longer. Low satisfaction increases turnover costs and hurts service quality.',
+    goodValueIndicator: 'Score above 75% indicates engaged workforce likely to stay and perform well.',
+    badValueIndicator: 'Score below 65% indicates risk of turnover, productivity issues, and cultural problems.',
+    unit: 'Score (0-100)',
+    category: 'operational'
+  },
+
+  'market-share': {
+    id: 'market-share',
+    name: 'Market Share',
+    description: 'Percentage of total market sales that your business captures.',
+    businessMeaning: 'Your position relative to competitors in the total market. This indicates competitive strength and brand recognition.',
+    whyItMatters: 'Market share correlates with pricing power, brand influence, and growth potential. It affects investor perception and strategic options.',
+    goodValueIndicator: 'Growing market share indicates competitive advantage and effective market penetration.',
+    badValueIndicator: 'Declining market share suggests competitive pressure, product issues, or marketing challenges.',
+    unit: '%',
+    category: 'financial'
   }
 };
 

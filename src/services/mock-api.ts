@@ -125,6 +125,141 @@ const rawKPIData: Omit<KPIData, 'healthStatus'>[] = [
       { period: '2024-11', value: 4250 },
       { period: '2024-12', value: 4200 }
     ]
+  },
+  {
+    id: 'cac',
+    currentValue: 850,
+    previousValue: 820,
+    targetValue: 600,
+    trend: 'up',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 780 },
+      { period: '2024-09', value: 800 },
+      { period: '2024-10', value: 820 },
+      { period: '2024-11', value: 835 },
+      { period: '2024-12', value: 850 }
+    ]
+  },
+  {
+    id: 'ltv-cac-ratio',
+    currentValue: 4.94,
+    previousValue: 5.18,
+    targetValue: 3.0,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 5.26 },
+      { period: '2024-09', value: 5.19 },
+      { period: '2024-10', value: 5.18 },
+      { period: '2024-11', value: 5.09 },
+      { period: '2024-12', value: 4.94 }
+    ]
+  },
+  {
+    id: 'mrr',
+    currentValue: 125000,
+    previousValue: 132000,
+    targetValue: 150000,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 128000 },
+      { period: '2024-09', value: 130000 },
+      { period: '2024-10', value: 132000 },
+      { period: '2024-11', value: 128500 },
+      { period: '2024-12', value: 125000 }
+    ]
+  },
+  {
+    id: 'arr',
+    currentValue: 1500000,
+    previousValue: 1584000,
+    targetValue: 1800000,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 1536000 },
+      { period: '2024-09', value: 1560000 },
+      { period: '2024-10', value: 1584000 },
+      { period: '2024-11', value: 1542000 },
+      { period: '2024-12', value: 1500000 }
+    ]
+  },
+  {
+    id: 'nps',
+    currentValue: 42,
+    previousValue: 48,
+    targetValue: 50,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 52 },
+      { period: '2024-09', value: 50 },
+      { period: '2024-10', value: 48 },
+      { period: '2024-11', value: 45 },
+      { period: '2024-12', value: 42 }
+    ]
+  },
+  {
+    id: 'csat',
+    currentValue: 78,
+    previousValue: 82,
+    targetValue: 85,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 85 },
+      { period: '2024-09', value: 83 },
+      { period: '2024-10', value: 82 },
+      { period: '2024-11', value: 80 },
+      { period: '2024-12', value: 78 }
+    ]
+  },
+  {
+    id: 'operational-efficiency',
+    currentValue: 68,
+    previousValue: 72,
+    targetValue: 80,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 75 },
+      { period: '2024-09', value: 73 },
+      { period: '2024-10', value: 72 },
+      { period: '2024-11', value: 70 },
+      { period: '2024-12', value: 68 }
+    ]
+  },
+  {
+    id: 'employee-satisfaction',
+    currentValue: 71,
+    previousValue: 74,
+    targetValue: 80,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 76 },
+      { period: '2024-09', value: 75 },
+      { period: '2024-10', value: 74 },
+      { period: '2024-11', value: 72 },
+      { period: '2024-12', value: 71 }
+    ]
+  },
+  {
+    id: 'market-share',
+    currentValue: 12.5,
+    previousValue: 13.2,
+    targetValue: 15.0,
+    trend: 'down',
+    lastUpdated: '2026-01-13T05:00:00Z',
+    historicalValues: [
+      { period: '2024-08', value: 13.8 },
+      { period: '2024-09', value: 13.5 },
+      { period: '2024-10', value: 13.2 },
+      { period: '2024-11', value: 12.8 },
+      { period: '2024-12', value: 12.5 }
+    ]
   }
 ];
 

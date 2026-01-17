@@ -6,6 +6,24 @@ import { calculateHealthStatus } from './thresholds';
 
 export const insightRules: InsightRule[] = [
   {
+    id: 'revenue-decline-revenue-growth',
+    name: 'Revenue Decline Detection',
+    kpiId: 'revenue-growth',
+    priority: 'high',
+    condition: (data: KPIData) => {
+      return data.trend === 'down' && data.healthStatus === 'warning';
+    },
+    generateInsight: (data: KPIData) => ({
+      kpiId: data.id,
+      title: 'Revenue Decline Detected',
+      observation: `Revenue has decreased by ${((data.previousValue - data.currentValue) / data.previousValue * 100).toFixed(1)}% from the previous period.`,
+      businessImpact: 'Declining revenue reduces cash flow, limits growth investments, and may indicate market share loss or competitive pressure.',
+      action: 'Investigate sales pipeline, market conditions, and competitive positioning. Consider pricing strategy review and sales team performance analysis.',
+      priority: 'high'
+    })
+  },
+  
+  {
     id: 'revenue-decline',
     name: 'Revenue Decline Detection',
     kpiId: 'revenue',

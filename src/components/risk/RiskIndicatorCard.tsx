@@ -2,17 +2,17 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, TrendingDown, Clock, Info } from 'lucide-react';
-import type { RiskIndicator, KPIData, HealthStatus } from '@/types/business';
+import { AlertTriangle, TrendingDown, Clock, Info, Eye } from 'lucide-react';
+import { RiskIndicator, KPIData, HealthStatus } from '@/types/business';
 import { getKPIDefinition } from '@/lib/business-logic/kpi-definitions';
 
-interface RiskIndicatorProps {
+interface RiskIndicatorCardProps {
   risk: RiskIndicator;
   kpiData: KPIData;
   showDetails?: boolean;
 }
 
-const RiskIndicator: React.FC<RiskIndicatorProps> = ({ 
+const RiskIndicatorCard: React.FC<RiskIndicatorCardProps> = ({ 
   risk, 
   kpiData, 
   showDetails = true 
@@ -58,7 +58,7 @@ const RiskIndicator: React.FC<RiskIndicatorProps> = ({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-lg border-2 ${getStatusColor(risk.status)} overflow-hidden`}
+      className={`rounded-lg border-2 ${getStatusColor(risk.status)} overflow-hidden hover:shadow-lg transition-shadow`}
     >
       {/* Header */}
       <div className="p-4 pb-3">
@@ -75,6 +75,9 @@ const RiskIndicator: React.FC<RiskIndicatorProps> = ({
               </span>
             </div>
           </div>
+          <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+            <Eye className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
@@ -134,4 +137,4 @@ const RiskIndicator: React.FC<RiskIndicatorProps> = ({
   );
 };
 
-export default RiskIndicator;
+export default RiskIndicatorCard;

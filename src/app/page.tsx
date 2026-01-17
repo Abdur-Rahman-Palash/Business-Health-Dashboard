@@ -11,6 +11,9 @@ import BusinessHealthDashboard from '@/components/business-health/BusinessHealth
 import ExecutiveRecommendationsPanel from '@/components/recommendations/ExecutiveRecommendationsPanel';
 import ExecutiveSummary from '@/components/executive-summary/ExecutiveSummary';
 import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+import InteractiveFilters from '@/components/filters/InteractiveFilters';
+import ExecutiveKPICards from '@/components/kpi-cards/ExecutiveKPICards';
 
 // Import services and types
 import { mockAPI } from '@/services/mock-api';
@@ -22,6 +25,11 @@ const ExecutiveDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [filters, setFilters] = useState({
+    dateRange: { start: '', end: '' },
+    region: 'all',
+    product: 'all'
+  });
 
   useEffect(() => {
     loadDashboardData();
@@ -60,6 +68,20 @@ const ExecutiveDashboard: React.FC = () => {
     // In a real implementation, this would trigger the action workflow
   };
 
+  const handleFiltersChange = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+    // In a real implementation, this would trigger data refetch with filters
+  };
+
+  const handleFiltersReset = () => {
+    setFilters({
+      dateRange: { start: '', end: '' },
+      region: 'all',
+      product: 'all'
+    });
+    // In a real implementation, this would reset the data
+  };
+
   const tabs = [
     { id: 'overview', label: 'Overview', icon: BarChart3 },
     { id: 'kpi-meaning', label: 'KPI Meaning', icon: Brain },
@@ -72,7 +94,7 @@ const ExecutiveDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -84,7 +106,7 @@ const ExecutiveDashboard: React.FC = () => {
 
   if (error || !dashboardData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="text-red-500 text-lg font-medium mb-4">{error}</div>
           <button
@@ -100,37 +122,38 @@ const ExecutiveDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 h-auto sm:h-16">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-xl font-bold text-gray-900">
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                 Executive Business Health Dashboard
               </h1>
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="text-sm text-gray-500">
+              <ThemeToggle />
+              <div className="text-sm text-gray-500 dark:text-gray-400">
                 Last updated: {new Date(dashboardData.lastUpdated).toLocaleString()}
               </div>
               <button
                 onClick={loadDashboardData}
-                className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
               >
-                <RefreshCw className="w-4 h-4" />
-                Refresh
+                <RefreshCw className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                <span className="text-gray-700 dark:text-gray-300">Refresh</span>
               </button>
               <button
                 onClick={() => setIsMenuOpen(true)}
-                className="lg:hidden flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                className="lg:hidden flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                 aria-label="Open navigation menu"
               >
-                <Menu className="w-5 h-5" />
+                <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
               </button>
             </div>
           </div>
@@ -138,7 +161,7 @@ const ExecutiveDashboard: React.FC = () => {
       </header>
 
       {/* Navigation Tabs */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="hidden lg:flex gap-8">
             {tabs.map((tab) => {
@@ -149,8 +172,8 @@ const ExecutiveDashboard: React.FC = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                     activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -173,14 +196,14 @@ const ExecutiveDashboard: React.FC = () => {
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 25 }}
-            className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white shadow-xl border-l border-gray-200 p-4"
+            className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white dark:bg-gray-800 shadow-xl border-l border-gray-200 dark:border-gray-700 p-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Navigation</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Navigation</h2>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm"
+                className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg text-sm text-gray-700 dark:text-gray-300"
               >
                 Close
               </button>
@@ -198,8 +221,8 @@ const ExecutiveDashboard: React.FC = () => {
                     }}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg border transition-colors ${
                       isActive
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                        : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -214,6 +237,15 @@ const ExecutiveDashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Filters Section */}
+        <div className="mb-8">
+          <InteractiveFilters
+            filters={filters}
+            onFiltersChange={handleFiltersChange}
+            onReset={handleFiltersReset}
+          />
+        </div>
+
         <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 20 }}
@@ -223,10 +255,10 @@ const ExecutiveDashboard: React.FC = () => {
           {activeTab === 'overview' && (
             <div className="space-y-8">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                   Business Intelligence Overview
                 </h2>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                   Comprehensive business insights and decision support for executive leadership. 
                   Navigate through each section to understand your business health, risks, and opportunities.
                 </p>
@@ -234,50 +266,50 @@ const ExecutiveDashboard: React.FC = () => {
 
               {/* Quick Stats */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <BarChart3 className="w-6 h-6 text-blue-600" />
+                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                      <BarChart3 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-gray-900">{dashboardData.kpis.length}</div>
-                      <div className="text-sm text-gray-600">KPIs Tracked</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">{dashboardData.kpis.length}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">KPIs Tracked</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                      <Target className="w-6 h-6 text-yellow-600" />
+                    <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                      <Target className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-gray-900">{dashboardData.insights.length}</div>
-                      <div className="text-sm text-gray-600">Active Insights</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">{dashboardData.insights.length}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Active Insights</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-red-600" />
+                    <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                      <Shield className="w-6 h-6 text-red-600 dark:text-red-400" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-gray-900">{dashboardData.risks.length}</div>
-                      <div className="text-sm text-gray-600">Risk Indicators</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">{dashboardData.risks.length}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Risk Indicators</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Target className="w-6 h-6 text-green-600" />
+                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                      <Target className="w-6 h-6 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-gray-900">{dashboardData.recommendations.length}</div>
-                      <div className="text-sm text-gray-600">Recommendations</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white">{dashboardData.recommendations.length}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Recommendations</div>
                     </div>
                   </div>
                 </div>
@@ -287,40 +319,43 @@ const ExecutiveDashboard: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => setActiveTab('kpi-meaning')}
                 >
-                  <Brain className="w-8 h-8 text-blue-500 mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">KPI Meaning</h3>
-                  <p className="text-gray-600 text-sm">
+                  <Brain className="w-8 h-8 text-blue-500 dark:text-blue-400 mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">KPI Meaning</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">
                     Understand what each metric means for your business and why it matters.
                   </p>
                 </motion.div>
 
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => setActiveTab('insights')}
                 >
-                  <Target className="w-8 h-8 text-yellow-500 mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Business Insights</h3>
-                  <p className="text-gray-600 text-sm">
+                  <Target className="w-8 h-8 text-yellow-500 dark:text-yellow-400 mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Business Insights</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">
                     Data-driven insights using the What → So What → Now What framework.
                   </p>
                 </motion.div>
 
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => setActiveTab('summary')}
                 >
-                  <FileText className="w-8 h-8 text-green-500 mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Executive Summary</h3>
-                  <p className="text-gray-600 text-sm">
+                  <FileText className="w-8 h-8 text-green-500 dark:text-green-400 mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Executive Summary</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">
                     One-page summary of business health, risks, and opportunities.
                   </p>
                 </motion.div>
               </div>
+
+              {/* Executive KPI Cards */}
+              <ExecutiveKPICards kpis={dashboardData.kpis} />
             </div>
           )}
 

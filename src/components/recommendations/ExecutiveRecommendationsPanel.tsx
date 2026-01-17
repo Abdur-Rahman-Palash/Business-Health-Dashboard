@@ -90,10 +90,10 @@ const ExecutiveRecommendationsPanel: React.FC<ExecutiveRecommendationsPanelProps
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
           What Should Leadership Do Next?
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           Action-oriented recommendations directly linked to business insights for executive decision-making.
         </p>
       </motion.div>
@@ -105,42 +105,42 @@ const ExecutiveRecommendationsPanel: React.FC<ExecutiveRecommendationsPanelProps
         transition={{ duration: 0.5, delay: 0.1 }}
         className="grid grid-cols-2 md:grid-cols-4 gap-4"
       >
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
+            <AlertTriangle className="w-5 h-5 text-red-500 dark:text-red-400" />
             <div>
-              <div className="text-xl font-bold text-red-900">{urgencyStats.immediate}</div>
-              <div className="text-sm text-red-700">Immediate Actions</div>
+              <div className="text-xl font-bold text-red-900 dark:text-red-100">{urgencyStats.immediate}</div>
+              <div className="text-sm text-red-700 dark:text-red-300">Immediate Actions</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <Clock className="w-5 h-5 text-yellow-500" />
+            <Clock className="w-5 h-5 text-yellow-500 dark:text-yellow-400" />
             <div>
-              <div className="text-xl font-bold text-yellow-900">{urgencyStats.shortTerm}</div>
-              <div className="text-sm text-yellow-700">Short-term</div>
+              <div className="text-xl font-bold text-yellow-900 dark:text-yellow-100">{urgencyStats.shortTerm}</div>
+              <div className="text-sm text-yellow-700 dark:text-yellow-300">Short-term</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <TrendingUp className="w-5 h-5 text-blue-500" />
+            <TrendingUp className="w-5 h-5 text-blue-500 dark:text-blue-400" />
             <div>
-              <div className="text-xl font-bold text-blue-900">{urgencyStats.longTerm}</div>
-              <div className="text-sm text-blue-700">Long-term</div>
+              <div className="text-xl font-bold text-blue-900 dark:text-blue-100">{urgencyStats.longTerm}</div>
+              <div className="text-sm text-blue-700 dark:text-blue-300">Long-term</div>
             </div>
           </div>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-500" />
+            <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400" />
             <div>
-              <div className="text-xl font-bold text-green-900">{recommendations.length}</div>
-              <div className="text-sm text-green-700">Total Actions</div>
+              <div className="text-xl font-bold text-green-900 dark:text-green-100">{recommendations.length}</div>
+              <div className="text-sm text-green-700 dark:text-green-300">Total Actions</div>
             </div>
           </div>
         </div>
@@ -151,17 +151,17 @@ const ExecutiveRecommendationsPanel: React.FC<ExecutiveRecommendationsPanelProps
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex flex-wrap items-center gap-4 p-4 bg-gray-50 rounded-lg"
+        className="flex flex-wrap items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
       >
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-gray-500" />
-          <span className="text-sm font-medium text-gray-700">Filter by:</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by:</span>
         </div>
         
         <select
           value={selectedActionType}
           onChange={(e) => setSelectedActionType(e.target.value)}
-          className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Actions</option>
           <option value="increase">Increase</option>
@@ -174,7 +174,7 @@ const ExecutiveRecommendationsPanel: React.FC<ExecutiveRecommendationsPanelProps
         <select
           value={selectedTimeframe}
           onChange={(e) => setSelectedTimeframe(e.target.value)}
-          className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Timeframes</option>
           <option value="immediate">Immediate</option>
@@ -185,7 +185,7 @@ const ExecutiveRecommendationsPanel: React.FC<ExecutiveRecommendationsPanelProps
         <select
           value={selectedEffort}
           onChange={(e) => setSelectedEffort(e.target.value)}
-          className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="all">All Efforts</option>
           <option value="low">Low Effort</option>
@@ -205,13 +205,13 @@ const ExecutiveRecommendationsPanel: React.FC<ExecutiveRecommendationsPanelProps
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-12 bg-gray-50 rounded-lg"
+            className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg"
           >
             <Target className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               No recommendations found
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               Try adjusting your filters to see available recommendations.
             </p>
           </motion.div>
@@ -244,15 +244,15 @@ const ExecutiveRecommendationsPanel: React.FC<ExecutiveRecommendationsPanelProps
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="bg-blue-50 border border-blue-200 rounded-lg p-6"
+        className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6"
       >
-        <h3 className="text-lg font-semibold text-blue-900 mb-4">
+        <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">
           Executive Action Framework
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
           <div>
-            <h4 className="font-medium text-blue-800 mb-2">Increase Actions</h4>
-            <p className="text-blue-700">
+            <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">Increase Actions</h4>
+            <p className="text-blue-700 dark:text-blue-300">
               Focus on growth initiatives, revenue expansion, and market opportunities.
             </p>
           </div>

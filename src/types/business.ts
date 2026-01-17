@@ -8,7 +8,16 @@ export type KPIId =
   | 'expense-ratio' 
   | 'customer-health'
   | 'churn-rate'
-  | 'clv';
+  | 'clv'
+  | 'cac'
+  | 'ltv-cac-ratio'
+  | 'mrr'
+  | 'arr'
+  | 'nps'
+  | 'csat'
+  | 'operational-efficiency'
+  | 'employee-satisfaction'
+  | 'market-share';
 
 export type HealthStatus = 'excellent' | 'good' | 'warning' | 'critical';
 

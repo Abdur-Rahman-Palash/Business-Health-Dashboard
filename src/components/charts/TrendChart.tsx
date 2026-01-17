@@ -47,8 +47,8 @@ const TrendChart: React.FC<TrendChartProps> = ({
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="text-sm font-medium text-gray-900">{label}</p>
+        <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+          <p className="text-sm font-medium text-gray-900 dark:text-white">{label}</p>
           <p className="text-sm font-bold" style={{ color: chartColor }}>
             {payload[0].value.toLocaleString()} {definition.unit}
           </p>
@@ -71,7 +71,7 @@ const TrendChart: React.FC<TrendChartProps> = ({
               <stop offset="95%" stopColor={chartColor} stopOpacity={0}/>
             </linearGradient>
           </defs>
-          {showGrid && <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />}
+          {showGrid && <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" strokeOpacity={0.5} />}
           <XAxis 
             dataKey="period" 
             axisLine={false}

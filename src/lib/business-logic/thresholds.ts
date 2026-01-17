@@ -58,6 +58,78 @@ export const thresholdRules: Record<KPIId, ThresholdRule> = {
     good: { min: 5000, max: 9999 }, // $5k-$9.9k
     warning: { min: 2000, max: 4999 }, // $2k-$4.9k
     critical: { max: 1999 } // <$2k
+  },
+
+  'cac': {
+    kpiId: 'cac',
+    excellent: { max: 500 }, // <=$500
+    good: { min: 501, max: 800 }, // $501-$800
+    warning: { min: 801, max: 1200 }, // $801-$1200
+    critical: { min: 1201 } // >$1200
+  },
+
+  'ltv-cac-ratio': {
+    kpiId: 'ltv-cac-ratio',
+    excellent: { min: 5 }, // 5:1+
+    good: { min: 3, max: 4.9 }, // 3:1-4.9:1
+    warning: { min: 2, max: 2.9 }, // 2:1-2.9:1
+    critical: { max: 1.9 } // <2:1
+  },
+
+  'mrr': {
+    kpiId: 'mrr',
+    excellent: { min: 200000 }, // $200k+
+    good: { min: 100000, max: 199999 }, // $100k-$199.9k
+    warning: { min: 50000, max: 99999 }, // $50k-$99.9k
+    critical: { max: 49999 } // <$50k
+  },
+
+  'arr': {
+    kpiId: 'arr',
+    excellent: { min: 2400000 }, // $2.4M+
+    good: { min: 1200000, max: 2399999 }, // $1.2M-$2.39M
+    warning: { min: 600000, max: 1199999 }, // $600k-$1.19M
+    critical: { max: 599999 } // <$600k
+  },
+
+  'nps': {
+    kpiId: 'nps',
+    excellent: { min: 70 }, // 70+
+    good: { min: 50, max: 69.9 }, // 50-69.9
+    warning: { min: 0, max: 49.9 }, // 0-49.9
+    critical: { max: -0.1 } // <0
+  },
+
+  'csat': {
+    kpiId: 'csat',
+    excellent: { min: 90 }, // 90%+
+    good: { min: 80, max: 89.9 }, // 80-89.9%
+    warning: { min: 70, max: 79.9 }, // 70-79.9%
+    critical: { max: 69.9 } // <70%
+  },
+
+  'operational-efficiency': {
+    kpiId: 'operational-efficiency',
+    excellent: { min: 85 }, // 85+
+    good: { min: 70, max: 84.9 }, // 70-84.9
+    warning: { min: 50, max: 69.9 }, // 50-69.9
+    critical: { max: 49.9 } // <50
+  },
+
+  'employee-satisfaction': {
+    kpiId: 'employee-satisfaction',
+    excellent: { min: 85 }, // 85+
+    good: { min: 70, max: 84.9 }, // 70-84.9
+    warning: { min: 60, max: 69.9 }, // 60-69.9
+    critical: { max: 59.9 } // <60
+  },
+
+  'market-share': {
+    kpiId: 'market-share',
+    excellent: { min: 25 }, // 25%+
+    good: { min: 15, max: 24.9 }, // 15-24.9%
+    warning: { min: 5, max: 14.9 }, // 5-14.9%
+    critical: { max: 4.9 } // <5%
   }
 };
 
