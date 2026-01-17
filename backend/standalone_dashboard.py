@@ -537,5 +537,7 @@ with st.sidebar:
     st.subheader("🔧 System Status")
     st.success("✅ Dashboard Running Successfully")
     st.markdown(f"📊 Data Points: {len(business_data['customers'])} customers, {len(business_data['sales'])} transactions")
+    import os
+    HF_TOKEN = os.getenv('HUGGINGFACE_TOKEN', None)
     st.markdown(f"🤖 AI Features: {'Enabled' if use_ai_features else 'Disabled'}")
     st.markdown(f"📅 Analysis Period: {time_period}")
