@@ -15,7 +15,7 @@
 
 # next.js
 /.next/
-/out/
+# /out/ - Removed for Hostinger deployment
 
 # production
 /build

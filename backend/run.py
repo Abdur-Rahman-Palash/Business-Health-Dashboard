@@ -13,15 +13,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 if __name__ == "__main__":
     print("🚀 Starting Executive Business Health Dashboard Backend...")
-    print("📍 API Documentation will be available at: http://localhost:8000/docs")
-    print("🔗 Health Check: http://localhost:8000/api/health")
-    print("⚡ Dashboard API: http://localhost:8000/api/dashboard/complete")
+    print("📍 API Documentation will be available at: http://localhost:8001/docs")
+    print("🔗 Health Check: http://localhost:8001/api/health")
+    print("⚡ Dashboard API: http://localhost:8001/api/dashboard/complete")
     print("\n" + "="*60)
     
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
-        port=8000,
+        port=8001,
         reload=True,
         log_level="info"
     )

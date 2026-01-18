@@ -14,6 +14,7 @@ import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import InteractiveFilters from '@/components/filters/InteractiveFilters';
 import ExecutiveKPICards from '@/components/kpi-cards/ExecutiveKPICards';
+import StreamlitEmbed from '@/components/streamlit/StreamlitEmbed';
 
 // Import services and types
 import { mockAPI } from '@/services/mock-api';
@@ -369,96 +370,11 @@ const ExecutiveDashboard: React.FC = () => {
           )}
 
           {activeTab === 'streamlit' && (
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                  📊 Streamlit Business Dashboard
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Access the full-featured Streamlit dashboard with advanced analytics and controls
-                </p>
-              </div>
-              
-              <div className="space-y-6">
-                {/* Development Access */}
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">
-                    🚀 Local Development Access
-                  </h3>
-                  <p className="text-blue-800 dark:text-blue-200 mb-4">
-                    The Streamlit dashboard is currently running locally with full controls and features.
-                  </p>
-                  <div className="flex items-center justify-center">
-                    <a 
-                      href="http://localhost:8501"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                    >
-                      <Activity className="w-5 h-5" />
-                      Open Streamlit Dashboard
-                    </a>
-                  </div>
-                </div>
-
-                {/* Production Deployment Info */}
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                  <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100 mb-3">
-                    🌐 Production Deployment
-                  </h3>
-                  <p className="text-yellow-800 dark:text-yellow-200 mb-4">
-                    For production deployment, the Streamlit dashboard needs to be deployed separately or integrated as a backend service.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg">
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">Option 1: Separate Deployment</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
-                        Deploy Streamlit to a service like Streamlit Cloud, Heroku, or Railway
-                      </p>
-                    </div>
-                    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg">
-                      <h4 className="font-medium text-gray-900 dark:text-white mb-2">Option 2: API Integration</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
-                        Integrate Streamlit as a backend API service for this Next.js frontend
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Features List */}
-                <div className="bg-gray-50 dark:bg-gray-700/50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    ✨ Streamlit Dashboard Features
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-700 dark:text-gray-300">Real-time KPI monitoring</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-700 dark:text-gray-300">Interactive charts</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-700 dark:text-gray-300">Customer segmentation</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-700 dark:text-gray-300">AI-powered insights</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-700 dark:text-gray-300">Trend analysis</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-700 dark:text-gray-300">Executive summary</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <StreamlitEmbed 
+              streamlitUrl="https://business-health-dashboard-production.up.railway.app"
+              height="900px"
+              showControls={true}
+            />
           )}
 
           {activeTab === 'insights' && (

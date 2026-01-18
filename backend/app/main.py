@@ -16,13 +16,13 @@ from datetime import datetime
 # Add current directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from services.data_generator import BusinessDataGenerator
-from services.kpi_calculator import KPICalculator
-from services.health_scorer import HealthScorer
-from services.insight_engine import InsightEngine
-from services.ai_insight_engine import AIInsightEngine
-from services.business_analyzer import BusinessAnalyzer
-from models import *
+from .services.data_generator import BusinessDataGenerator
+from .services.kpi_calculator import KPICalculator
+from .services.health_scorer import HealthScorer
+from .services.insight_engine import InsightEngine
+from .services.ai_insight_engine import AIInsightEngine
+from .services.business_analyzer import BusinessAnalyzer
+from .models import *
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -214,4 +214,4 @@ if __name__ == "__main__":
     print("⚡ Dashboard API: http://localhost:8000/api/dashboard/complete")
     print("\n" + "="*60)
     
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

@@ -16,6 +16,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Get port from Railway environment
+port = int(os.environ.get("PORT", 8501))
+
 # Custom CSS for professional styling
 st.markdown("""
 <style>

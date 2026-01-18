@@ -226,3 +226,12 @@ class APIResponse(BaseModel):
     success: bool
     message: Optional[str] = None
     timestamp: str = Field(default_factory=lambda: datetime.now().isoformat())
+
+# Complete Dashboard Response
+class CompleteDashboardResponse(BaseModel):
+    kpis: List[KPIData]
+    health_scores: Dict[str, Any]
+    insights: List[Insight]
+    ai_insights: List[Insight]
+    business_analysis: Dict[str, Any]
+    last_updated: datetime
