@@ -61,9 +61,20 @@ const mockDashboardData = {
 };
 
 export async function GET() {
-  return NextResponse.json({
-    data: mockDashboardData,
-    success: true,
-    timestamp: new Date().toISOString()
-  });
+  try {
+    return NextResponse.json({
+      data: mockDashboardData,
+      success: true,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('API Error:', error);
+    return NextResponse.json(
+      { 
+        error: 'Internal server error',
+        message: 'Failed to fetch dashboard data'
+      },
+      { status: 500 }
+    );
+  }
 }
