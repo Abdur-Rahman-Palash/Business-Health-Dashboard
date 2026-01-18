@@ -12,9 +12,9 @@ export const API_CONFIG = {
     timeout: 10000,
   },
   
-  // Production with separate backend
+  // Production with separate backend (Railway)
   production: {
-    baseURL: 'https://your-backend-domain.com',
+    baseURL: 'https://executive-backend-production.up.railway.app',
     timeout: 10000,
   },
   
