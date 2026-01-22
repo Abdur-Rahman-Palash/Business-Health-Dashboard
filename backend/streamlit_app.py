@@ -8,6 +8,7 @@ import requests
 from datetime import datetime, timedelta
 import json
 import os
+import sys
 
 # Configure page
 st.set_page_config(
@@ -53,9 +54,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API Configuration
-# For Vercel deployment, we need the full URL
-if os.environ.get("VERCEL"):
-    API_BASE = "https://executive-dashboard-vert.vercel.app/"
+# Detect if running on Vercel and set appropriate base URL
+if 'vercel' in sys.modules or os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+    API_BASE = "https://business-health-dashboard.vercel.app"
 else:
     API_BASE = os.environ.get("API_BASE_URL", "http://localhost:8000")
 
