@@ -164,7 +164,15 @@ def main():
     
     # Fetch dashboard data
     with st.spinner("Loading dashboard data..."):
+        # Test simple API first
+        st.write("Testing simple API endpoint...")
+        test_response = fetch_api_data("/api/test")
+        st.write(f"Test API Response: {test_response}")
+        
+        # Then try dashboard API
+        st.write("Testing dashboard API endpoint...")
         dashboard_response = fetch_api_data("/api/dashboard/complete")
+        st.write(f"Dashboard API Response: {dashboard_response}")
         
         if not dashboard_response:
             st.error("Unable to load dashboard data. Please check your API connection.")
