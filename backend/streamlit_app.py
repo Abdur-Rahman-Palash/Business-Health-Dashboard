@@ -7,6 +7,7 @@ from plotly.subplots import make_subplots
 import requests
 from datetime import datetime, timedelta
 import json
+import os
 
 # Configure page
 st.set_page_config(
@@ -52,7 +53,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API Configuration
-API_BASE = "http://localhost:8001"  # Updated to use test backend
+API_BASE = "http://localhost:8000"  # Updated to use simple backend
 
 def fetch_api_data(endpoint):
     """Fetch data from the FastAPI backend"""

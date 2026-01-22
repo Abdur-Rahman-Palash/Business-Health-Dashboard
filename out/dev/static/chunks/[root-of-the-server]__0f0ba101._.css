@@ -658,8 +658,12 @@
     isolation: isolate;
   }
 
-  .z-7 {
-    z-index: 7;
+  .z-2 {
+    z-index: 2;
+  }
+
+  .z-9 {
+    z-index: 9;
   }
 
   .z-50 {
@@ -732,6 +736,14 @@
     .container {
       max-width: 96rem;
     }
+  }
+
+  .m-0 {
+    margin: calc(var(--spacing) * 0);
+  }
+
+  .m-8 {
+    margin: calc(var(--spacing) * 8);
   }
 
   .mx-auto {
@@ -857,6 +869,14 @@
     display: table;
   }
 
+  .\!h-1 {
+    height: calc(var(--spacing) * 1) !important;
+  }
+
+  .\!h-2 {
+    height: calc(var(--spacing) * 2) !important;
+  }
+
   .h-1 {
     height: calc(var(--spacing) * 1);
   }
@@ -917,8 +937,8 @@
     width: calc(var(--spacing) * 1);
   }
 
-  .w-2 {
-    width: calc(var(--spacing) * 2);
+  .w-1\! {
+    width: calc(var(--spacing) * 1) !important;
   }
 
   .w-3 {
@@ -1829,60 +1849,28 @@
     transition-timing-function: var(--ease-out);
   }
 
-  .\[app-\:\1 c\] {
-    app-:  c;
+  .\[app-\:\1 6\] {
+    app-:  6;
   }
 
-  .\[app-c\:K6\] {
-    app-c: K6;
+  .\[key\:\18 \1f �ng\] {
+    key:   �ng;
   }
 
-  .\[key\:\16 \#4ng\] {
-    key:  #4ng;
-  }
-
-  .\[key\:\&0Ong\] {
-    key: & 0Ong;
-  }
-
-  .\[key\:c\#Ong\] {
-    key: c#Ong;
+  .\[key\:4L�ng\] {
+    key: 4L�ng;
   }
 
   .\[key\:j\^4ng\] {
     key: j^ 4ng;
   }
 
-  .\[key\:n�4ng\] {
-    key: n�4ng;
+  .\[key\:�\19 Ong\] {
+    key: � Ong;
   }
 
-  .\[key\:v\&4ng\] {
-    key: v& 4ng;
-  }
-
-  .\[key\:�\3 4ng\] {
-    key: � 4ng;
-  }
-
-  .\[key\:�\14 Ong\] {
-    key: � Ong;
-  }
-
-  .\[key\:�\1e 4ng\] {
-    key: � 4ng;
-  }
-
-  .\[key\:�\$a\] {
-    key: �$ a;
-  }
-
-  .\[key\:�\&4ng\] {
-    key: �& 4ng;
-  }
-
-  .\[key\:�\<4ng\] {
-    key: �< 4ng;
+  .\[key\:�-Ong\] {
+    key: �-Ong;
   }
 
   .\[key\:��\14 \] {
@@ -1916,12 +1904,6 @@
   @media (hover: hover) {
     .hover\:bg-blue-600:hover {
       background-color: var(--color-blue-600);
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:bg-blue-700:hover {
-      background-color: var(--color-blue-700);
     }
   }
 
@@ -2172,18 +2154,6 @@
   }
 
   @media (prefers-color-scheme: dark) {
-    .dark\:bg-gray-700\/50 {
-      background-color: #36415380;
-    }
-
-    @supports (color: color-mix(in lab, red, red)) {
-      .dark\:bg-gray-700\/50 {
-        background-color: color-mix(in oklab, var(--color-gray-700) 50%, transparent);
-      }
-    }
-  }
-
-  @media (prefers-color-scheme: dark) {
     .dark\:bg-gray-800 {
       background-color: var(--color-gray-800);
     }
@@ -2414,12 +2384,6 @@
   @media (prefers-color-scheme: dark) {
     .dark\:text-yellow-100 {
       color: var(--color-yellow-100);
-    }
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .dark\:text-yellow-200 {
-      color: var(--color-yellow-200);
     }
   }
 
