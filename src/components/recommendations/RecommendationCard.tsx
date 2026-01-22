@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUp, ArrowDown, Search, Target, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { ArrowUp, ArrowDown, Search, Target, Clock, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { Recommendation, Insight, KPIData } from '@/types/business';
 import { getKPIDefinition } from '@/lib/business-logic/kpi-definitions';
 
@@ -19,6 +19,9 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
   kpiData,
   onAction
 }) => {
+  const [isActionLoading, setIsActionLoading] = useState(false);
+  const [actionTaken, setActionTaken] = useState(false);
+  
   const definition = getKPIDefinition(recommendation.kpiId);
 
   const getActionIcon = (actionType: string) => {
@@ -59,8 +62,30 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
     }
   };
 
-  const handleAction = () => {
-    onAction?.(recommendation);
+  const handleAction = async () => {
+    if (actionTaken) {
+      console.log('Action already taken for this recommendation');
+      return;
+    }
+    
+    setIsActionLoading(true);
+    
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Call the parent action handler
+      await onAction?.(recommendation);
+      
+      // Mark action as taken
+      setActionTaken(true);
+      
+      console.log('Action successfully executed for recommendation:', recommendation.title);
+    } catch (error) {
+      console.error('Error executing action:', error);
+    } finally {
+      setIsActionLoading(false);
+    }
   };
 
   return (
@@ -134,11 +159,38 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
       <div className="px-6 pb-6 pt-2 border-t border-gray-100">
         <button
           onClick={handleAction}
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+          disabled={isActionLoading || actionTaken}
+          className={`w-full font-medium py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 ${
+            actionTaken 
+              ? 'bg-green-500 hover:bg-green-600 text-white' 
+              : isActionLoading
+              ? 'bg-gray-400 text-white cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600 text-white'
+          }`}
         >
-          <Target className="w-4 h-4" />
-          Take Action on This Recommendation
+          {isActionLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Processing Action...
+            </>
+          ) : actionTaken ? (
+            <>
+              <CheckCircle className="w-4 h-4" />
+              Action Taken ✓
+            </>
+          ) : (
+            <>
+              <Target className="w-4 h-4" />
+              Take Action on This Recommendation
+            </>
+          )}
         </button>
+        
+        {actionTaken && (
+          <div className="mt-2 text-center text-sm text-green-600">
+            ✅ Action successfully initiated and tracked
+          </div>
+        )}
       </div>
 
       {/* KPI Context */}

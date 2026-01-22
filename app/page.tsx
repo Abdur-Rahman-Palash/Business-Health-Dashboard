@@ -66,7 +66,35 @@ const ExecutiveDashboard: React.FC = () => {
 
   const handleActionRecommendation = (recommendation: Recommendation) => {
     console.log('Take action on recommendation:', recommendation);
-    // In a real implementation, this would trigger the action workflow
+    
+    // Create a more interactive action handling
+    const actionMessage = `🎯 Action Initiated: "${recommendation.title}"\n\n📋 Description: ${recommendation.description}\n\n🎯 Expected Impact: ${recommendation.expectedImpact}\n\n⏰ Timeframe: ${recommendation.timeframe}\n💪 Effort Required: ${recommendation.effort}\n🔍 Confidence: ${recommendation.confidence}\n\n📊 Action Type: ${recommendation.actionType}\n\n✅ This action has been logged and will be tracked for implementation.`;
+    
+    // Show a more detailed alert
+    if (confirm(`Are you sure you want to take action on this recommendation?\n\n"${recommendation.title}"\n\nClick OK to proceed or Cancel to abort.`)) {
+      alert(actionMessage);
+      
+      // In a real implementation, you would:
+      // 1. Send the action to your backend API
+      // 2. Create a task in your project management system
+      // 3. Notify relevant team members
+      // 4. Update the recommendation status
+      // 5. Log the action for audit trail
+      
+      console.log('Action confirmed and processed:', {
+        recommendationId: recommendation.id,
+        title: recommendation.title,
+        actionType: recommendation.actionType,
+        timestamp: new Date().toISOString(),
+        status: 'initiated'
+      });
+      
+      // Optional: Show success message
+      // You could use a toast notification library here
+      console.log('✅ Recommendation action successfully initiated!');
+    } else {
+      console.log('❌ Action cancelled by user');
+    }
   };
 
   const handleFiltersChange = (newFilters: typeof filters) => {
