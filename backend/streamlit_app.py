@@ -53,7 +53,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API Configuration
-API_BASE = os.environ.get("API_BASE_URL", "")
+# For Vercel deployment, we need the full URL
+if os.environ.get("VERCEL"):
+    API_BASE = "https://executive-dashboard-vert.vercel.app/"
+else:
+    API_BASE = os.environ.get("API_BASE_URL", "http://localhost:8000")
 
 def fetch_api_data(endpoint):
     """Fetch data from the FastAPI backend"""
