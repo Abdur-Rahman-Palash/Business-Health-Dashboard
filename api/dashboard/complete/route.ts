@@ -62,17 +62,26 @@ const mockDashboardData = {
 
 export async function GET() {
   try {
-    return NextResponse.json({
+    console.log('API Route: /api/dashboard/complete called');
+    console.log('Mock data prepared:', JSON.stringify(mockDashboardData, null, 2));
+    
+    const response = {
       data: mockDashboardData,
       success: true,
       timestamp: new Date().toISOString()
-    });
-  } catch (error) {
+    };
+    
+    console.log('Response prepared:', JSON.stringify(response, null, 2));
+    
+    return NextResponse.json(response);
+  } catch (error: unknown) {
     console.error('API Error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack available');
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        message: 'Failed to fetch dashboard data'
+        message: 'Failed to fetch dashboard data',
+        details: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
