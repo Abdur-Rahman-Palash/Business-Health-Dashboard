@@ -18,87 +18,40 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Theme Management
-if 'theme' not in st.session_state:
-    st.session_state.theme = 'light'
-
-def toggle_theme():
-    """Toggle between light and dark themes"""
-    if st.session_state.theme == 'light':
-        st.session_state.theme = 'dark'
-        st.success("🌙 Dark mode activated!")
-    else:
-        st.session_state.theme = 'light'
-        st.success("☀️ Light mode activated!")
-    st.rerun()
-
 # Get port from Railway environment
 port = int(os.environ.get("PORT", 8501))
 
-# Custom CSS for professional styling with theme support
-def get_theme_css():
-    """Get CSS based on current theme"""
-    current_theme = st.session_state.get('theme', 'light')
-    
-    if current_theme == 'dark':
-        return """
-        <style>
-            .main-header { color: #f3f4f6; }
-            .metric-card { 
-                background: #1f2937; 
-                color: #f9fafb; 
-                border-left-color: #3b82f6;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            }
-            .health-excellent { border-left-color: #10b981; }
-            .health-good { border-left-color: #3b82f6; }
-            .health-warning { border-left-color: #f59e0b; }
-            .health-critical { border-left-color: #ef4444; }
-            .insight-card { 
-                background: #1f2937; 
-                color: #f9fafb; 
-                border-left-color: #6366f1;
-            }
-            body { 
-                background-color: #111827; 
-                color: #f9fafb; 
-            }
-            .stApp { 
-                background-color: #0d1117; 
-            }
-        </style>
-        """
-    else:
-        return """
-        <style>
-            .main-header { color: #1f2937; }
-            .metric-card { 
-                background: white; 
-                color: #1f2937; 
-                border-left-color: #3b82f6;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            }
-            .health-excellent { border-left-color: #10b981; }
-            .health-good { border-left-color: #3b82f6; }
-            .health-warning { border-left-color: #f59e0b; }
-            .health-critical { border-left-color: #ef4444; }
-            .insight-card { 
-                background: #f8fafc; 
-                color: #1f2937; 
-                border-left-color: #6366f1;
-            }
-            body { 
-                background-color: #ffffff; 
-                color: #1f2937; 
-            }
-            .stApp { 
-                background-color: #ffffff; 
-            }
-        </style>
-        """
-
-# Apply theme CSS
-st.markdown(get_theme_css(), unsafe_allow_html=True)
+# Custom CSS for professional styling
+st.markdown("""
+<style>
+    .main-header {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #1f2937;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .metric-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        border-left: 4px solid #3b82f6;
+        margin: 0.5rem 0;
+    }
+    .health-excellent { border-left-color: #10b981; }
+    .health-good { border-left-color: #3b82f6; }
+    .health-warning { border-left-color: #f59e0b; }
+    .health-critical { border-left-color: #ef4444; }
+    .insight-card {
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 3px solid #6366f1;
+        margin: 0.5rem 0;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # API Configuration
 # Force Vercel URL for production
@@ -171,16 +124,6 @@ def main():
     # Sidebar
     with st.sidebar:
         st.header("Dashboard Controls")
-        
-        # Theme Toggle
-        st.subheader("🎨 Theme Settings")
-        if st.button("🌙 Toggle Dark Mode", type="secondary"):
-            toggle_theme()
-        
-        # Current theme indicator
-        current_theme = st.session_state.get('theme', 'light')
-        theme_icon = "🌙" if current_theme == 'dark' else "☀️"
-        st.write(f"Current Theme: {theme_icon} {'Dark' if current_theme == 'dark' else 'Light'} Mode")
         
         # Real-time toggle
         
