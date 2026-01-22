@@ -54,22 +54,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API Configuration
-# Debug environment variables
-st.write("Debug - Environment variables:")
-st.write(f"VERCEL: {os.environ.get('VERCEL')}")
-st.write(f"AWS_LAMBDA_FUNCTION_NAME: {os.environ.get('AWS_LAMBDA_FUNCTION_NAME')}")
-
-# Force Vercel URL for now - will be detected properly in production
+# Force Vercel URL for production
 API_BASE = "https://business-health-dashboard.vercel.app"
-
-# Alternative: Use window.location if available in browser
-# For now, hardcode the Vercel URL
 
 def fetch_api_data(endpoint):
     """Fetch data from the FastAPI backend"""
     try:
         full_url = f"{API_BASE}{endpoint}"
-        st.write(f"Debug - Fetching from: {full_url}")
         response = requests.get(full_url)
         if response.status_code == 200:
             return response.json()
@@ -164,15 +155,7 @@ def main():
     
     # Fetch dashboard data
     with st.spinner("Loading dashboard data..."):
-        # Test simple API first
-        st.write("Testing simple API endpoint...")
-        test_response = fetch_api_data("/api/test")
-        st.write(f"Test API Response: {test_response}")
-        
-        # Then try dashboard API
-        st.write("Testing dashboard API endpoint...")
         dashboard_response = fetch_api_data("/api/dashboard/complete")
-        st.write(f"Dashboard API Response: {dashboard_response}")
         
         if not dashboard_response:
             st.error("Unable to load dashboard data. Please check your API connection.")
