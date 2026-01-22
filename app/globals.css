@@ -28,10 +28,49 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Dark mode styles for Tailwind v4 */
+.dark body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
 /* Ensure dark mode classes work properly */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+/* Additional dark mode utilities */
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+.dark .text-gray-900 {
+  color: #f9fafb !important;
+}
+
+.dark .text-gray-700 {
+  color: #d1d5db !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #374151 !important;
+}
+
+.dark .bg-gray-800 {
+  background-color: #1f2937 !important;
+}
+
+.dark .text-gray-400 {
+  color: #9ca3af !important;
 }

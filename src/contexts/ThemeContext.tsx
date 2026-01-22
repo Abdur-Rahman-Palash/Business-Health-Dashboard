@@ -56,7 +56,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, [theme, mounted]);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    console.log('ToggleTheme called, current theme:', theme);
+    setTheme(prevTheme => {
+      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
+      console.log('Setting new theme:', newTheme);
+      return newTheme;
+    });
   };
 
   // Prevent flash of incorrect theme
