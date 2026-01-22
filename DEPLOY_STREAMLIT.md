@@ -12,7 +12,7 @@
 2. GitHub দিয়ে sign up করুন
 3. Free plan select করুন
 
-### 1.2 Prepare Files
+### 1.2 Prepare File
 ```bash
 # Railway এর জন্য requirements.txt
 cp requirements-streamlit.txt requirements.txt
