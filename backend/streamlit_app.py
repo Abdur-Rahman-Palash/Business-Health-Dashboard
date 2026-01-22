@@ -54,16 +54,23 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API Configuration
-# Detect if running on Vercel and set appropriate base URL
-if 'vercel' in sys.modules or os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
-    API_BASE = "https://business-health-dashboard.vercel.app"
-else:
-    API_BASE = os.environ.get("API_BASE_URL", "http://localhost:8000")
+# Debug environment variables
+st.write("Debug - Environment variables:")
+st.write(f"VERCEL: {os.environ.get('VERCEL')}")
+st.write(f"AWS_LAMBDA_FUNCTION_NAME: {os.environ.get('AWS_LAMBDA_FUNCTION_NAME')}")
+
+# Force Vercel URL for now - will be detected properly in production
+API_BASE = "https://business-health-dashboard.vercel.app"
+
+# Alternative: Use window.location if available in browser
+# For now, hardcode the Vercel URL
 
 def fetch_api_data(endpoint):
     """Fetch data from the FastAPI backend"""
     try:
-        response = requests.get(f"{API_BASE}{endpoint}")
+        full_url = f"{API_BASE}{endpoint}"
+        st.write(f"Debug - Fetching from: {full_url}")
+        response = requests.get(full_url)
         if response.status_code == 200:
             return response.json()
         else:
