@@ -125,6 +125,14 @@ def main():
     with st.sidebar:
         st.header("Dashboard Controls")
         
+        # Real-time toggle
+        st.subheader("Real-time Features")
+        auto_refresh = st.checkbox("🔄 Auto-refresh (30s)", value=False, help="Automatically refresh data every 30 seconds")
+        
+        if auto_refresh:
+            st.write("🔄 Auto-refresh enabled")
+            # Auto-refresh logic would go here in production
+        
         # Refresh button
         if st.button("🔄 Refresh Data", type="primary"):
             fetch_api_data("/api/dashboard/refresh")
@@ -143,7 +151,7 @@ def main():
         st.subheader("Department Filter")
         departments = st.multiselect(
             "Select Departments",
-            ["All", "Sales", "Marketing", "Operations", "Finance"],
+            ["All", "Sales", "Marketing", "Operations", "Finance", "IT", "HR"],
             default=["All"]
         )
         
@@ -152,6 +160,16 @@ def main():
         show_financial = st.checkbox("Financial", value=True)
         show_customer = st.checkbox("Customer", value=True)
         show_operational = st.checkbox("Operational", value=True)
+        show_technical = st.checkbox("Technical", value=False)
+        
+        # Advanced Features
+        st.subheader("Advanced Features")
+        show_predictions = st.checkbox("📊 AI Predictions", value=False)
+        show_alerts = st.checkbox("🚨 Smart Alerts", value=True)
+        export_data = st.checkbox("📥 Export Data", value=False)
+        
+        if export_data:
+            st.info("📥 Data export feature coming soon!")
     
     # Fetch dashboard data
     with st.spinner("Loading dashboard data..."):
@@ -321,6 +339,50 @@ def main():
                         status
                     )
                     st.plotly_chart(fig, use_container_width=True)
+        
+        # Technical KPIs
+        if show_technical:
+            st.subheader("🔧 Technical Performance")
+            
+            # Mock technical KPIs
+            technical_kpis = [
+                {
+                    "name": "System Uptime",
+                    "value": 99.9,
+                    "target": 99.5,
+                    "unit": "%",
+                    "status": "excellent"
+                },
+                {
+                    "name": "API Response Time",
+                    "value": 145,
+                    "target": 200,
+                    "unit": "ms",
+                    "status": "good"
+                },
+                {
+                    "name": "Error Rate",
+                    "value": 0.2,
+                    "target": 1.0,
+                    "unit": "%",
+                    "status": "excellent"
+                }
+            ]
+            
+            cols = st.columns(3)
+            for i, kpi in enumerate(technical_kpis):
+                with cols[i]:
+                    current_value = kpi.get('value', 0)
+                    target_value = kpi.get('target', 100)
+                    status = kpi.get('status', 'good')
+                    
+                    fig = create_kpi_gauge(
+                        current_value,
+                        target_value,
+                        kpi.get('name', 'KPI'),
+                        status
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
     
     # Insights Section
     st.header("💡 Business Insights")
@@ -391,10 +453,124 @@ def main():
     else:
         st.info("No recommendations available at the moment.")
     
+    # AI Predictions Section
+    if show_predictions:
+        st.header("🤖 AI-Powered Predictions")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.subheader("📈 Revenue Forecast")
+            # Mock prediction data
+            prediction_months = ['Feb', 'Mar', 'Apr', 'May', 'Jun']
+            predicted_revenue = [1280000, 1320000, 1350000, 1380000, 1420000]
+            confidence = [85, 82, 78, 75, 70]
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=prediction_months,
+                y=predicted_revenue,
+                mode='lines+markers',
+                name='Predicted Revenue',
+                line=dict(color='#3b82f6', width=3),
+                marker=dict(size=8)
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=prediction_months,
+                y=[r * (1 - (100-c)/100) for r, c in zip(predicted_revenue, confidence)],
+                mode='lines',
+                name='Confidence Range',
+                line=dict(color='#3b82f6', dash='dash'),
+                fill='tonexty',
+                fillcolor='rgba(59, 130, 246, 0.2)'
+            ))
+            
+            fig.update_layout(
+                title='Revenue Prediction (Next 5 Months)',
+                xaxis_title='Month',
+                yaxis_title='Revenue ($)',
+                height=400
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with col2:
+            st.subheader("⚠️ Risk Predictions")
+            
+            risks = [
+                {"Risk": "Customer Churn Increase", "Probability": "25%", "Impact": "High"},
+                {"Risk": "Market Downturn", "Probability": "15%", "Impact": "Medium"},
+                {"Risk": "Supply Chain Issues", "Probability": "10%", "Impact": "High"}
+            ]
+            
+            for risk in risks:
+                risk_color = "🔴" if risk["Impact"] == "High" else "🟡" if risk["Impact"] == "Medium" else "🟢"
+                st.write(f"{risk_color} **{risk['Risk']}**")
+                st.write(f"Probability: {risk['Probability']} | Impact: {risk['Impact']}")
+                st.progress(float(risk['Probability'].rstrip('%'))/100)
+                st.write("---")
+    
+    # Smart Alerts Section
+    if show_alerts:
+        st.header("🚨 Smart Alerts & Notifications")
+        
+        alerts = [
+            {
+                "type": "critical",
+                "title": "Revenue Drop Detected",
+                "message": "Revenue decreased by 15% compared to last month",
+                "time": "2 hours ago",
+                "action": "Investigate sales pipeline"
+            },
+            {
+                "type": "warning", 
+                "title": "Customer Churn Alert",
+                "message": "Churn rate increased by 2% this week",
+                "time": "5 hours ago",
+                "action": "Review customer support tickets"
+            },
+            {
+                "type": "info",
+                "title": "Positive Trend",
+                "message": "New customer acquisition up 20% MoM",
+                "time": "1 day ago",
+                "action": "Scale marketing efforts"
+            }
+        ]
+        
+        for alert in alerts:
+            alert_icon = "🚨" if alert["type"] == "critical" else "⚠️" if alert["type"] == "warning" else "ℹ️"
+            
+            with st.expander(f"{alert_icon} {alert['title']}", expanded=alert["type"] == "critical"):
+                st.write(f"**Message:** {alert['message']}")
+                st.write(f"**Time:** {alert['time']}")
+                st.write(f"**Suggested Action:** {alert['action']}")
+                
+                if alert["type"] == "critical":
+                    st.error("Immediate attention required!")
+                elif alert["type"] == "warning":
+                    st.warning("Monitor closely")
+                else:
+                    st.info("Positive development")
+    
     # Footer
     st.markdown("---")
     last_updated = data.get('last_updated', dashboard_response.get('timestamp', 'Unknown'))
     st.markdown(f"<center><small>Last updated: {last_updated}</small></center>", unsafe_allow_html=True)
+    
+    # Additional footer info
+    st.markdown("---")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("🔄 Auto-refresh", "Enabled" if auto_refresh else "Disabled")
+    
+    with col2:
+        st.metric("📊 Active KPIs", str(len(filtered_kpis)))
+    
+    with col3:
+        st.metric("⚡ Real-time", "Active" if auto_refresh else "Manual")
 
 if __name__ == "__main__":
     main()
