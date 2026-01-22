@@ -384,8 +384,105 @@ def main():
                     )
                     st.plotly_chart(fig, use_container_width=True)
     
+    # neubyte.tech Integration
+    st.subheader(" Data Sources")
+    use_neubyte = st.checkbox(" Use neubyte.tech API", value=False, help="Connect to neubyte.tech for enhanced data")
+    
+    if use_neubyte:
+        # API Key input
+        api_key = st.text_input(" neubyte.tech API Key", type="password", help="Enter your neubyte.tech API key")
+        
+        if api_key and api_key != "your-api-key-here":
+            # Update API key
+            NEUBYTE_API_KEY = api_key
+            st.success(" neubyte.tech API key configured!")
+            st.info(" Advanced data sources activated")
+            
+            # Test connection
+            with st.spinner("Testing neubyte.tech connection..."):
+                neubyte_status = fetch_neubyte_data("/v1/status")
+                if neubyte_status:
+                    st.success(" Connected to neubyte.tech")
+                    st.write(f" API Status: {neubyte_status.get('status', 'Unknown')}")
+                    st.write(f" Latency: {neubyte_status.get('latency', 'N/A')}ms")
+                else:
+                    st.error(" neubyte.tech connection failed")
+        else:
+            st.warning(" Please enter your neubyte.tech API key")
+    else:
+        st.info("Using local mock data")
+        
+    # Client Management
+    st.subheader(" Client Management")
+    
+    # Client selection
+    clients = [
+        "Client A - Tech Company",
+        "Client B - Retail Business", 
+        "Client C - Manufacturing Firm",
+        "Client D - Financial Services",
+        "Client E - Healthcare Provider",
+        "Add New Client..."
+    ]
+    
+    selected_client = st.selectbox(
+        "Select Client",
+        clients,
+        help="Choose which client's data to view"
+    )
+    
+    if selected_client == "Add New Client...":
+        st.subheader(" Add New Client")
+        with st.form("new_client_form"):
+            client_name = st.text_input("Client Name", placeholder="Enter client name")
+            client_industry = st.selectbox(
+                "Industry",
+                ["Technology", "Retail", "Manufacturing", "Finance", "Healthcare", "Other"],
+                help="Select client's industry"
+            )
+            client_api_key = st.text_input("Client API Key", type="password", placeholder="Enter client's API key (if applicable)")
+            
+            submitted = st.form_submit_button("Add Client", type="primary")
+            
+            if submitted and client_name:
+                st.success(f" Client '{client_name}' added successfully!")
+                st.info(f" Industry: {client_industry}")
+                if client_api_key:
+                    st.info(" API key configured")
+            else:
+                st.info(" Using default data sources")
+    else:
+        st.success(f" Selected: {selected_client}")
+        
+        # Client-specific configuration
+        with st.expander(f" {selected_client} Settings", expanded=False):
+            st.write("**Client Configuration:**")
+            st.write(f"**Name:** {selected_client}")
+            st.write(f"**Industry:** {selected_client.split(' - ')[1] if ' - ' in selected_client else 'General'}")
+            st.write(f"**Data Source:** neubyte.tech API" if use_neubyte else "Local Mock Data")
+            
+            # Client-specific metrics
+            st.write("**Custom Metrics:**")
+            client_metrics = st.multiselect(
+                "Select Metrics for This Client",
+                ["Revenue", "Customers", "Orders", "Inventory", "Support Tickets", "Custom KPIs"],
+                default=["Revenue", "Customers"]
+            )
+            
+            st.write(f"**Selected Metrics:** {', '.join(client_metrics)}")
+            
+            # Client branding
+            st.write("**Branding:**")
+            primary_color = st.color_picker("Primary Color", "#3b82f6")
+            logo_url = st.text_input("Logo URL", placeholder="https://example.com/logo.png")
+            
+            if primary_color:
+                st.write(f"**Theme Color:** {primary_color}")
+            if logo_url:
+                st.image(logo_url, width=100, caption="Client Logo"),
+                
     # Insights Section
-    st.header("💡 Business Insights")
+    st.header(" Business Insights")
     
     insights = data.get('insights', [])
     if insights:
