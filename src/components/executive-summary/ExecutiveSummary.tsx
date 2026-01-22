@@ -4,6 +4,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText, TrendingUp, AlertTriangle, Target, Calendar, Download } from 'lucide-react';
 import type { ExecutiveSummary } from '@/types/business';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface ExecutiveSummaryProps {
   summary: ExecutiveSummary;
@@ -32,9 +34,116 @@ const ExecutiveSummary: React.FC<ExecutiveSummaryProps> = ({
     });
   };
 
-  const handleDownload = () => {
-    // In a real implementation, this would generate and download a PDF
-    const summaryText = `
+  const handleDownload = async () => {
+    try {
+      // Create a temporary container for the content
+      const element = document.createElement('div');
+      element.style.width = '210mm';
+      element.style.padding = '20mm';
+      element.style.backgroundColor = 'white';
+      element.style.fontFamily = 'Arial, sans-serif';
+      
+      // Build the HTML content for PDF
+      element.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #1e40af; font-size: 24px; margin-bottom: 10px;">Executive Business Summary</h1>
+          <p style="color: #6b7280; font-size: 14px;">Period: ${summary.period}</p>
+          <p style="color: #6b7280; font-size: 14px;">Generated: ${formatDate(summary.generatedAt)}</p>
+        </div>
+        
+        <div style="margin-bottom: 30px; padding: 15px; border: 2px solid #3b82f6; border-radius: 8px; background-color: #eff6ff;">
+          <h2 style="color: #1e40af; font-size: 18px; margin-bottom: 10px;">Overall Business Health</h2>
+          <p style="font-size: 16px; font-weight: bold; color: #1e40af;">${summary.overallHealth.charAt(0).toUpperCase() + summary.overallHealth.slice(1)}</p>
+          <p style="color: #6b7280; font-size: 12px;">Current assessment of business performance</p>
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+          <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 15px;">Key Highlights</h2>
+          ${summary.keyHighlights.map((highlight, index) => `
+            <div style="margin-bottom: 10px; padding: 10px; background-color: #f9fafb; border-left: 4px solid #3b82f6;">
+              <strong>${index + 1}.</strong> ${highlight}
+            </div>
+          `).join('')}
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+          <h2 style="color: #dc2626; font-size: 18px; margin-bottom: 15px;">Top Risks</h2>
+          ${summary.topRisks.map((risk, index) => `
+            <div style="margin-bottom: 15px; padding: 12px; background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;">
+              <h3 style="color: #dc2626; font-size: 14px; margin-bottom: 5px;">${risk.title}</h3>
+              <p style="color: #7f1d1d; font-size: 12px;">${risk.description}</p>
+              <p style="color: #991b1b; font-size: 10px; margin-top: 5px;">Related KPI: ${risk.kpiId.replace('-', ' ').charAt(0).toUpperCase() + risk.kpiId.slice(1).replace('-', ' ')}</p>
+            </div>
+          `).join('')}
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+          <h2 style="color: #059669; font-size: 18px; margin-bottom: 15px;">Top Opportunities</h2>
+          ${summary.topOpportunities.map((opportunity, index) => `
+            <div style="margin-bottom: 15px; padding: 12px; background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px;">
+              <h3 style="color: #059669; font-size: 14px; margin-bottom: 5px;">${opportunity.title}</h3>
+              <p style="color: #064e3b; font-size: 12px;">${opportunity.description}</p>
+              <p style="color: #047857; font-size: 10px; margin-top: 5px;">Related KPI: ${opportunity.kpiId.replace('-', ' ').charAt(0).toUpperCase() + opportunity.kpiId.slice(1).replace('-', ' ')}</p>
+            </div>
+          `).join('')}
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+          <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 15px;">Executive Narrative</h2>
+          <div style="padding: 15px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+            <p style="color: #374151; font-size: 12px; line-height: 1.5; white-space: pre-line;">${summary.narrative}</p>
+          </div>
+        </div>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 10px; color: #6b7280;">
+          <p>This summary is generated automatically based on current business metrics and insights.</p>
+          <p>Last updated: ${formatDate(summary.generatedAt)}</p>
+        </div>
+      `;
+      
+      // Add to DOM temporarily
+      document.body.appendChild(element);
+      
+      // Create canvas from the element
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      // Remove from DOM
+      document.body.removeChild(element);
+      
+      // Create PDF
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+      
+      // Add first page
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      
+      // Add additional pages if needed
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      
+      // Download PDF
+      pdf.save(`executive-summary-${summary.period}.pdf`);
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      
+      // Fallback to text download if PDF generation fails
+      const summaryText = `
 Executive Business Summary - ${summary.period}
 Generated: ${formatDate(summary.generatedAt)}
 
@@ -51,17 +160,18 @@ ${summary.topOpportunities.map((opp, index) => `${index + 1}. ${opp.title}: ${op
 
 EXECUTIVE NARRATIVE:
 ${summary.narrative}
-    `;
+      `;
 
-    const blob = new Blob([summaryText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `executive-summary-${summary.period}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+      const blob = new Blob([summaryText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `executive-summary-${summary.period}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   };
 
   return (
