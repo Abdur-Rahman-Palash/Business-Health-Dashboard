@@ -1,0 +1,11 @@
+{
+  "name": "streamlit-executive-dashboard",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'Build complete'",
+    "start": "python api/streamlit-proxy.py"
+  },
+  "dependencies": {
+    "requests": "^2.31.0"
+  }
+}

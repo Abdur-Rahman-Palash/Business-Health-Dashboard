@@ -1,25 +1,19 @@
 {
-  "name": "executive-dashboard-streamlit",
+  "name": "streamlit-executive-dashboard",
   "services": {
-    "executive-dashboard": {
+    "streamlit-dashboard": {
       "source": {
         "project": "."
       },
       "build": {
         "builder": "NIXPACKS",
-        "buildCommand": "pip install -r requirements-streamlit.txt"
+        "buildCommand": "pip install -r requirements-railway.txt"
       },
       "deploy": {
         "startCommand": "streamlit run run_minimal_dashboard_clean.py --server.port=$PORT --server.address=0.0.0.0",
         "healthcheckPath": "/_stcore/health",
         "healthcheckTimeout": 100,
-        "restartPolicyType": "ON_FAILURE",
-        "ports": [
-          {
-            "port": 8501,
-            "protocol": "TCP"
-          }
-        ]
+        "restartPolicyType": "ON_FAILURE"
       }
     }
   }

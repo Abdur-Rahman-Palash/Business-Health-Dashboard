@@ -1,46 +1,48 @@
-"""
-Vercel Serverless Function - Streamlit Proxy
-This acts as a bridge between Vercel and Streamlit
-"""
-
-import http.client
+from http.server import BaseHTTPRequestHandler
 import json
+import subprocess
+import threading
+import time
 import os
 from urllib.parse import urlparse
 
-def handler(request):
-    """Vercel serverless function handler"""
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        # Start Streamlit if not running
+        if not hasattr(self, 'streamlit_started'):
+            self.start_streamlit()
+            self.streamlit_started = True
+        
+        # Proxy to Streamlit
+        self.proxy_request()
     
-    # Get Streamlit URL from environment
-    streamlit_url = os.environ.get('STREAMLIT_URL', 'https://your-streamlit-app.railway.app')
+    def do_POST(self):
+        self.proxy_request()
     
-    try:
-        # Parse the request
-        method = request.method
-        path = request.path
-        headers = dict(request.headers)
-        body = request.body if hasattr(request, 'body') else b''
+    def start_streamlit(self):
+        """Start Streamlit in background"""
+        def run_streamlit():
+            os.system("streamlit run run_minimal_dashboard_clean.py --server.port=8501 --server.address=0.0.0.0 --server.headless=true")
         
-        # Create connection to Streamlit
-        parsed_url = urlparse(streamlit_url)
-        conn = http.client.HTTPSConnection(parsed_url.netloc)
-        
-        # Forward request to Streamlit
-        conn.request(method, path, body, headers)
-        response = conn.getresponse()
-        
-        # Read response
-        response_body = response.read()
-        response_headers = dict(response.getheaders())
-        
-        return {
-            'statusCode': response.status,
-            'headers': response_headers,
-            'body': response_body
-        }
-        
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error': str(e)})
-        }
+        thread = threading.Thread(target=run_streamlit, daemon=True)
+        thread.start()
+        time.sleep(5)  # Wait for Streamlit to start
+    
+    def proxy_request(self):
+        """Proxy request to Streamlit"""
+        try:
+            import requests
+            response = requests.get(f"http://localhost:8501{self.path}", timeout=10)
+            
+            self.send_response(response.status_code)
+            for header, value in response.headers.items():
+                if header.lower() not in ['content-length', 'transfer-encoding']:
+                    self.send_header(header, value)
+            self.end_headers()
+            
+            self.wfile.write(response.content)
+        except Exception as e:
+            self.send_response(500)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": str(e)}).encode())
