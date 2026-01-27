@@ -38,11 +38,11 @@ class FileUploadManager:
             os.makedirs(self.client_data_dir)
     
     def render_file_upload_ui(self, client_name: str = None):
-        """Render complete no-upload solution - 100% working without 403 errors"""
+        """Render multi-format processor - supports CSV, PDF, TXT, JSON, XML, Excel"""
         
-        # Use complete no-upload solution
-        from no_upload_solution import manual_data_input
-        manual_data_input()
+        # Use multi-format processor
+        from multi_format_processor import multi_format_processor
+        multi_format_processor()
         
         return
         
