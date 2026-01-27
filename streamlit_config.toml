@@ -4,6 +4,9 @@ address = "0.0.0.0"
 headless = true
 enableCORS = false
 enableXsrfProtection = false
+enableWebsocketCompression = false
+maxUploadSize = 200
+maxMessageSize = 200
 
 [browser]
 gatherUsageStats = false
@@ -17,3 +20,7 @@ textColor = "#262730"
 [logger]
 level = "info"
 messageFormat = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+[client]
+caching = false
+displayEnabled = true

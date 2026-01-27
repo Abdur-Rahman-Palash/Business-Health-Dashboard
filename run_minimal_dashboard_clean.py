@@ -18,9 +18,9 @@ from client_manager import ClientManager, render_client_manager_ui
 from file_upload_manager import FileUploadManager, file_upload_manager
 from advanced_file_analyzer import advanced_file_analyzer
 
-# Handle API endpoints first (commented out due to Streamlit version issues)
-# if setup_api_endpoints():
-#     st.stop()  # Stop execution if API request was handled
+# Initialize production environment to fix 403 errors
+from production_fix import init_production_environment
+init_production_environment()
 
 # Initialize session state components
 def initialize_components():
