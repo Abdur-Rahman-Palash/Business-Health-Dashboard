@@ -17,6 +17,11 @@ from backend_api_manager import BackendAPIManager, api_manager
 from client_manager import ClientManager, render_client_manager_ui
 from file_upload_manager import FileUploadManager, file_upload_manager
 from advanced_file_analyzer import advanced_file_analyzer
+from streamlit_api_endpoints import setup_api_endpoints
+
+# Handle API endpoints first
+if setup_api_endpoints():
+    st.stop()  # Stop execution if API request was handled
 
 # Initialize session state components
 def initialize_components():
