@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Backend API Auto-Insert Manager
+Backend API Auto-Insert Manager with AI Decision Making
 Automatically detects, configures, and manages backend API connections
+Includes automatic decision generation from business data
 """
 
 import requests
@@ -10,6 +11,9 @@ import os
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime, timedelta
 import time
+
+# Import decision engine
+from decision_engine import decision_engine
 
 class BackendAPIManager:
     """Manages automatic backend API detection and data insertion"""
@@ -68,13 +72,81 @@ class BackendAPIManager:
                 continue
         return False, {"error": "No neubyte.tech endpoint available"}
     
-    def get_comprehensive_data(self, client_id: str = None, api_key: str = None) -> Dict:
-        """Get comprehensive dashboard data - always fetch fresh data"""
-        # Always fetch fresh data - no caching for real-time updates
-        data = self._fetch_from_backend(client_id, api_key)
+    def get_comprehensive_data(self, client_name: str = None) -> Dict:
+        """Get comprehensive data with automatic decision making"""
+        
+        # Get base data
+        data = self.get_data(client_name)
+        
+        # Generate automatic decisions if we have data
+        if data and data.get('status') != 'no_data':
+            try:
+                # Use decision engine to generate decisions
+                decisions = decision_engine.analyze_business_health(data.get('data', {}))
+                
+                # Add decisions to data
+                data['ai_decisions'] = decisions
+                data['has_decisions'] = True
+                
+                # Add decision timestamp
+                data['decision_generated_at'] = datetime.now().isoformat()
+                
+            except Exception as e:
+                # Fallback if decision engine fails
+                data['ai_decisions'] = {
+                    'error': f"Decision generation failed: {str(e)}",
+                    'fallback_recommendations': [
+                        "Monitor business metrics closely",
+                        "Focus on customer satisfaction",
+                        "Maintain operational efficiency",
+                        "Watch market trends"
+                    ]
+                }
+                data['has_decisions'] = False
+        
         return data
     
-    def _fetch_from_backend(self, client_id: str = None, api_key: str = None) -> Dict:
+    def get_ai_decisions_only(self, client_name: str = None) -> Dict:
+        """Get only AI-generated decisions"""
+        
+        data = self.get_comprehensive_data(client_name)
+        
+        if data.get('has_decisions'):
+            return data.get('ai_decisions', {})
+        else:
+            return {
+                'status': 'no_decisions',
+                'message': 'No decisions available - insufficient data',
+                'recommendations': [
+                    "Upload business data to enable AI decision making",
+                    "Ensure KPIs and business health metrics are available",
+                    "Check data quality and completeness"
+                ]
+            }
+    
+    def get_data(self, client_name: str = None) -> Dict:
+        """Get data from backend API with fallback"""
+        
+        # Try to get fresh data from backend
+        if self.active_endpoint:
+            try:
+                data = self._fetch_from_backend(client_name)
+                if data:
+                    return data
+            except Exception as e:
+                print(f"Backend fetch failed: {e}")
+        
+        # Fallback to cached data
+        cache_key = f"{client_name or 'default'}_comprehensive"
+        if cache_key in self.data_cache:
+            cached_data, timestamp = self.data_cache[cache_key]
+            if datetime.now() - timestamp < timedelta(seconds=self.cache_timeout):
+                return cached_data
+        
+        # Final fallback - generate empty structure
+        return self._generate_fallback_data()
+    
+    def _fetch_from_backend(self, client_name: str = None) -> Dict:
         """Fetch data from backend with multiple fallback strategies"""
         
         # Strategy 1: Try primary endpoint
@@ -99,9 +171,9 @@ class BackendAPIManager:
             except:
                 continue
         
-        # Strategy 3: Try neubyte.tech if API key provided
-        if api_key:
-            success, neubyte_data = self.test_neubyte_connection(api_key)
+        # Strategy 3: Try neubyte.tech if client_name provided
+        if client_name:
+            success, neubyte_data = self.test_neubyte_connection()
             if success:
                 return self._convert_neubyte_data(neubyte_data)
         
@@ -196,12 +268,12 @@ class BackendAPIManager:
         """Clear the data cache"""
         self.data_cache.clear()
     
-    def refresh_data(self, client_id: str = None, api_key: str = None) -> Dict:
+    def refresh_data(self, client_name: str = None) -> Dict:
         """Force refresh data from backend"""
-        cache_key = f"dashboard_data_{client_id or 'default'}"
+        cache_key = f"dashboard_data_{client_name or 'default'}"
         if cache_key in self.data_cache:
             del self.data_cache[cache_key]
-        return self.get_comprehensive_data(client_id, api_key)
+        return self.get_comprehensive_data(client_name)
 
 # Global instance
 api_manager = BackendAPIManager()

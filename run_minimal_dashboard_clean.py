@@ -17,6 +17,7 @@ from backend_api_manager import BackendAPIManager, api_manager
 from client_manager import ClientManager, render_client_manager_ui
 from file_upload_manager import FileUploadManager, file_upload_manager
 from advanced_file_analyzer import advanced_file_analyzer
+from decision_engine import decision_engine
 
 # Initialize session state components
 def initialize_components():
@@ -285,7 +286,88 @@ def main():
                         if insight.get('auto_generated'):
                             st.write("✅ **Auto-Generated**")
             
-            # Recommendations
+            # AI-Powered Decision Making
+            if data.get('has_decisions') and auto_analysis:
+                ai_decisions = data.get('ai_decisions', {})
+                st.subheader("🤖 AI-Powered Decision Making")
+                
+                # Executive Summary
+                executive_summary = ai_decisions.get('executive_summary', {})
+                if executive_summary:
+                    col1, col2, col3 = st.columns(3)
+                    
+                    with col1:
+                        st.metric("🎯 Overall Health", f"{executive_summary.get('overall_health_score', 0) * 100:.1f}%")
+                    
+                    with col2:
+                        st.metric("📊 Health Assessment", executive_summary.get('health_assessment', 'Unknown'))
+                    
+                    with col3:
+                        critical_count = executive_summary.get('critical_issues_count', 0)
+                        st.metric("🚨 Critical Issues", critical_count)
+                
+                # Top Priorities
+                top_priorities = executive_summary.get('top_priorities', [])
+                if top_priorities:
+                    st.subheader("🎯 Top Priorities")
+                    
+                    for priority in top_priorities:
+                        with st.expander(f"#{priority['rank']} {priority['area'].replace('_', ' ').title()} - {priority['status'].title()}", expanded=priority['rank'] <= 2):
+                            st.write(f"**Status:** {priority['status'].title()}")
+                            st.write(f"**Urgency:** {priority['urgency']}")
+                            st.write(f"**Key Action:** {priority['key_action']}")
+                
+                # Detailed Decisions by Area
+                prioritized_decisions = ai_decisions.get('prioritized_decisions', [])
+                if prioritized_decisions:
+                    st.subheader("📋 Detailed Decisions")
+                    
+                    for decision_item in prioritized_decisions[:3]:  # Show top 3
+                        decision = decision_item['decision']
+                        area = decision['area'].replace('_', ' ').title()
+                        
+                        with st.expander(f"📊 {area} - {decision['status'].title()}", expanded=decision_item['priority_score'] > 80):
+                            
+                            col1, col2 = st.columns(2)
+                            
+                            with col1:
+                                st.metric(f"📊 {area} Score", f"{decision['score'] * 100:.1f}%")
+                                st.metric("⚠️ Risk Level", decision['risk_level'].title())
+                                st.metric("⏱️ Timeline", decision['estimated_timeline'])
+                            
+                            with col2:
+                                st.metric("🎯 Impact", decision['impact'].title())
+                                st.metric("🔥 Urgency", decision['urgency'])
+                                st.metric("📈 Confidence", f"{ai_decisions.get('confidence_score', 0) * 100:.1f}%")
+                            
+                            # Recommended Actions
+                            st.write("**Recommended Actions:**")
+                            for action in decision['recommended_actions']:
+                                st.write(f"• {action.replace('_', ' ').title()}")
+                            
+                            # Specific Recommendations
+                            if decision['specific_recommendations']:
+                                st.write("**Specific Recommendations:**")
+                                for rec in decision['specific_recommendations'][:3]:  # Show top 3
+                                    st.write(f"• {rec}")
+                            
+                            # Success Metrics
+                            if decision['success_metrics']:
+                                st.write("**Success Metrics:**")
+                                for metric in decision['success_metrics']:
+                                    st.write(f"• {metric}")
+                
+                # Recommended Focus
+                recommended_focus = executive_summary.get('recommended_focus', '')
+                if recommended_focus:
+                    st.info(f"🎯 **Recommended Focus:** {recommended_focus}")
+                
+                # Next Review Date
+                next_review = executive_summary.get('next_review_date', '')
+                if next_review:
+                    st.info(f"📅 **Next Review Date:** {next_review}")
+            
+            # Legacy Recommendations (fallback)
             recommendations = data.get('recommendations', [])
             
             # Add recommendations from uploaded data
@@ -293,7 +375,7 @@ def main():
                 uploaded_recommendations = st.session_state.file_upload_manager.generate_comprehensive_recommendations(st.session_state.current_client)
                 recommendations.extend(uploaded_recommendations)
             
-            if recommendations and auto_analysis:
+            if recommendations and not data.get('has_decisions'):
                 st.subheader("💡 AI-Powered Recommendations")
                 
                 for rec in recommendations[:2]:
