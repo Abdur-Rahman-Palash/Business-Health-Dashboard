@@ -2,7 +2,6 @@
 """
 File Upload Manager for Client Data
 Handles CSV, PDF, Excel file uploads and auto-analysis
-Fixed for Render.com deployment - no 403 errors
 """
 
 import streamlit as st
@@ -14,9 +13,6 @@ import tempfile
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 import json
-
-# Import upload fixes
-from fix_streamlit_upload import init_upload_fixes, safe_file_upload, process_file_locally
 
 class FileUploadManager:
     """Manages client file uploads and data extraction"""
