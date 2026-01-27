@@ -38,11 +38,11 @@ class FileUploadManager:
             os.makedirs(self.client_data_dir)
     
     def render_file_upload_ui(self, client_name: str = None):
-        """Render simple file upload interface that actually works"""
+        """Render direct file processor that bypasses all upload issues"""
         
-        # Use simple upload that works
-        from simple_file_upload import show_simple_upload_interface
-        show_simple_upload_interface()
+        # Use direct processor that bypasses upload endpoints
+        from direct_upload_fix import direct_file_processor
+        direct_file_processor()
         
         return
         
