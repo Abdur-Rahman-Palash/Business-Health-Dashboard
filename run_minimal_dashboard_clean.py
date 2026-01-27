@@ -18,14 +18,6 @@ from client_manager import ClientManager, render_client_manager_ui
 from file_upload_manager import FileUploadManager, file_upload_manager
 from advanced_file_analyzer import advanced_file_analyzer
 
-# Page configuration
-st.set_page_config(
-    page_title="🚀 Minimal Executive Dashboard",
-    page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="auto"
-)
-
 # Initialize session state components
 def initialize_components():
     """Initialize all dashboard components"""
