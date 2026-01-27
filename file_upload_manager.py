@@ -42,103 +42,13 @@ class FileUploadManager:
             os.makedirs(self.client_data_dir)
     
     def render_file_upload_ui(self, client_name: str = None):
-        """Render enhanced file upload interface"""
+        """Render simple file upload interface that actually works"""
         
-        st.header("📁 Advanced Client Data Upload")
-        st.write("Upload your business data files for AI-powered comprehensive analysis and decision making")
+        # Use simple upload that works
+        from simple_file_upload import show_simple_upload_interface
+        show_simple_upload_interface()
         
-        if not client_name:
-            st.warning("⚠️ Please select a client first")
-            return
-        
-        # File upload sections
-        tab1, tab2, tab3, tab4 = st.tabs(["📊 Data Files", "📄 Documents", "🔧 Advanced Formats", "📜 Upload History"])
-        
-        with tab1:
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                # CSV Upload
-                st.subheader("📈 Upload CSV Data")
-                csv_file = st.file_uploader(
-                    "📈 Upload CSV Data (Sales, Customers, etc.)",
-                    type=['csv'],
-                    key=f"csv_{client_name}",
-                    help="Upload sales data, customer data, financial data in CSV format"
-                )
-                
-                if csv_file:
-                    if st.button("📊 Advanced CSV Analysis", key=f"process_csv_{client_name}"):
-                        with st.spinner("Performing advanced CSV analysis..."):
-                            result = self.process_uploaded_file(csv_file, client_name, 'csv')
-                            if result['success']:
-                                st.success(f"✅ {result['message']}")
-                                self.display_advanced_data_summary(result['data'], 'CSV')
-                            else:
-                                st.error(f"❌ {result['error']}")
-            
-            with col2:
-                # Excel Upload
-                st.subheader("📊 Upload Excel Files")
-                excel_file = st.file_uploader(
-                    "📊 Upload Excel Files",
-                    type=['xlsx', 'xls'],
-                    key=f"excel_{client_name}",
-                    help="Upload financial reports, sales data in Excel format"
-                )
-                
-                if excel_file:
-                    if st.button("📊 Advanced Excel Analysis", key=f"process_excel_{client_name}"):
-                        with st.spinner("Performing advanced Excel analysis..."):
-                            result = self.process_uploaded_file(excel_file, client_name, 'excel')
-                            if result['success']:
-                                st.success(f"✅ {result['message']}")
-                                self.display_advanced_data_summary(result['data'], 'Excel')
-                            else:
-                                st.error(f"❌ {result['error']}")
-        
-        with tab2:
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                # PDF Upload
-                st.subheader("📄 Upload PDF Reports")
-                pdf_file = st.file_uploader(
-                    "📄 Upload PDF Reports & Documents",
-                    type=['pdf'],
-                    key=f"pdf_{client_name}",
-                    help="Upload business reports, financial statements, contracts in PDF format"
-                )
-                
-                if pdf_file:
-                    if st.button("📄 Advanced PDF Analysis", key=f"process_pdf_{client_name}"):
-                        with st.spinner("Performing advanced PDF analysis..."):
-                            result = self.process_uploaded_file(pdf_file, client_name, 'pdf')
-                            if result['success']:
-                                st.success(f"✅ {result['message']}")
-                                self.display_advanced_data_summary(result['data'], 'PDF')
-                            else:
-                                st.error(f"❌ {result['error']}")
-            
-            with col2:
-                # Text Upload
-                st.subheader("📝 Upload Text Files")
-                txt_file = st.file_uploader(
-                    "📝 Upload Text Files (Notes, Reports)",
-                    type=['txt'],
-                    key=f"txt_{client_name}",
-                    help="Upload meeting notes, reports, text documents"
-                )
-                
-                if txt_file:
-                    if st.button("📝 Advanced Text Analysis", key=f"process_txt_{client_name}"):
-                        with st.spinner("Performing advanced text analysis..."):
-                            result = self.process_uploaded_file(txt_file, client_name, 'txt')
-                            if result['success']:
-                                st.success(f"✅ {result['message']}")
-                                self.display_advanced_data_summary(result['data'], 'Text')
-                            else:
-                                st.error(f"❌ {result['error']}")
+        return
         
         with tab3:
             st.subheader("🔧 Advanced Business Formats")
