@@ -38,11 +38,11 @@ class FileUploadManager:
             os.makedirs(self.client_data_dir)
     
     def render_file_upload_ui(self, client_name: str = None):
-        """Render multi-format processor - supports CSV, PDF, TXT, JSON, XML, Excel"""
+        """Render safe file upload system - actual file upload without 403 errors"""
         
-        # Use multi-format processor
-        from multi_format_processor import multi_format_processor
-        multi_format_processor()
+        # Use safe file upload system
+        from safe_file_upload_system import safe_file_upload_system
+        safe_file_upload_system()
         
         return
         

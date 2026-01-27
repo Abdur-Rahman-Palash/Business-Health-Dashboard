@@ -168,13 +168,13 @@ def main():
     elif st.session_state.get('show_file_upload', False):
         # File Upload Section
         if st.session_state.current_client:
-            st.header("📁 Multi-Format Data Processor")
-            st.write("Process CSV, PDF, TXT, JSON, XML, Excel data without file upload")
-            st.success("✅ All Formats Supported - No Upload Required!")
+            st.header("📁 Safe File Upload System")
+            st.write("Upload and process your files without 403 errors")
+            st.success("✅ All File Types Supported - Safe Upload System!")
             
-            # Call the multi-format processor
-            from multi_format_processor import multi_format_processor
-            multi_format_processor()
+            # Call the safe file upload system
+            from safe_file_upload_system import safe_file_upload_system
+            safe_file_upload_system()
             
             if st.button("← Back to Dashboard"):
                 st.session_state.show_file_upload = False
