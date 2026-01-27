@@ -16,6 +16,7 @@ class BackendAPIManager:
     
     def __init__(self):
         self.api_endpoints = [
+            "https://business-health-dashboard-1.onrender.com",  # Current Render.com backend
             "https://business-health-dashboard.vercel.app",
             "https://executive-dashboard.vercel.app", 
             "http://localhost:8081",  # Updated to working port
@@ -36,6 +37,13 @@ class BackendAPIManager:
         """Auto-detect working backend API endpoint"""
         for endpoint in self.api_endpoints:
             try:
+                # Try Streamlit health endpoint first
+                response = requests.get(f"{endpoint}/_stcore/health", timeout=3)
+                if response.status_code == 200 and response.text.strip() == "ok":
+                    self.active_endpoint = endpoint
+                    self.last_health_check = datetime.now()
+                    return endpoint
+                # Fallback to API health endpoint
                 response = requests.get(f"{endpoint}/api/health", timeout=3)
                 if response.status_code == 200:
                     self.active_endpoint = endpoint
