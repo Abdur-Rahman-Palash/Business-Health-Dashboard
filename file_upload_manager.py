@@ -51,11 +51,20 @@ class FileUploadManager:
         """Check if running in production environment"""
         import os
         # Check for Render.com environment
-        if os.environ.get('RENDER_SERVICE_ID') or 'onrender.com' in os.environ.get('HOSTNAME', ''):
+        render_service_id = os.environ.get('RENDER_SERVICE_ID')
+        hostname = os.environ.get('HOSTNAME', '')
+        environment = os.environ.get('ENVIRONMENT')
+        
+        # More specific checks
+        if render_service_id and render_service_id != 'Not Set':
             return True
-        # Check for other production indicators
-        if os.environ.get('ENVIRONMENT') == 'production':
+        
+        if 'onrender.com' in hostname:
             return True
+        
+        if environment == 'production':
+            return True
+        
         return False
     
     def ensure_upload_dir(self):
