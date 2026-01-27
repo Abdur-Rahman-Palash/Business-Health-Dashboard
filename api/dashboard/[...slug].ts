@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Backend URL - Change this to your deployed backend
-const BACKEND_URL = 'https://your-backend.railway.app';
+const BACKEND_URL = 'https://business-health-dashboard-1.onrender.com';
 
 export async function GET(
   request: NextRequest,

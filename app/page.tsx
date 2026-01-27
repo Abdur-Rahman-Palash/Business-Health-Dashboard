@@ -399,7 +399,7 @@ const ExecutiveDashboard: React.FC = () => {
 
           {activeTab === 'streamlit' && (
             <StreamlitEmbed 
-              streamlitUrl="https://business-health-dashboard-production.up.railway.app"
+              streamlitUrl="https://business-health-dashboard-1.onrender.com"
               height="900px"
               showControls={true}
             />
