@@ -1,8 +1,8 @@
 // API Configuration for different environments
 export const API_CONFIG = {
-  // Development environment
+  // Development environment - disabled for Streamlit
   development: {
-    baseURL: 'http://localhost:8001',
+    baseURL: 'http://localhost:3002/api', // Use local Next.js API
     timeout: 10000,
   },
   
@@ -12,9 +12,9 @@ export const API_CONFIG = {
     timeout: 10000,
   },
   
-  // Production with separate backend (Render)
+  // Production with separate backend (Render) - disabled
   production: {
-    baseURL: 'https://business-health-dashboard-1.onrender.com',
+    baseURL: 'http://localhost:3002/api', // Use local Next.js API
     timeout: 10000,
   },
   
@@ -34,7 +34,12 @@ const getEnvironment = (): keyof typeof API_CONFIG => {
     if (hostname.includes('vercel.app')) return 'vercel';
     if (hostname.includes('onrender.com')) return 'production';
     if (hostname.includes('executive-dashboard.com')) return 'production';
-    return 'hostinger'; // Default for other domains
+    return 'production'; // Default to production for other domains
+  }
+  
+  // For server-side rendering, check if we're in development
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+    return 'development';
   }
   
   return 'development';

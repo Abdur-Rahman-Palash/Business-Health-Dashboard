@@ -28,45 +28,41 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    // Check for saved theme preference or default to light mode
     const savedTheme = localStorage.getItem('theme') as Theme | null;
     if (savedTheme) {
       setTheme(savedTheme);
-    } else if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setTheme('dark');
     }
+    setMounted(true);
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
     
-    // Apply theme to document
     const root = document.documentElement;
     if (theme === 'dark') {
       root.classList.add('dark');
-      root.classList.remove('light');
     } else {
-      root.classList.add('light');
       root.classList.remove('dark');
     }
     
-    // Save theme preference
     localStorage.setItem('theme', theme);
   }, [theme, mounted]);
 
   const toggleTheme = () => {
-    console.log('ToggleTheme called, current theme:', theme);
-    setTheme(prevTheme => {
-      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
-      console.log('Setting new theme:', newTheme);
-      return newTheme;
-    });
+    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
-  // Prevent flash of incorrect theme
+  // Return a placeholder with same structure during SSR
   if (!mounted) {
-    return null;
+    return (
+      <ThemeContext.Provider value={{ theme: 'light', toggleTheme }}>
+        <div suppressHydrationWarning>
+          {children}
+        </div>
+      </ThemeContext.Provider>
+    );
   }
 
   return (

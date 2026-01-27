@@ -17,6 +17,16 @@ const StreamlitEmbed: React.FC<StreamlitEmbedProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleRefresh = () => {
+    setIsLoading(true);
+    setError(null);
+    // Force iframe reload
+    const iframe = document.querySelector('iframe[src*="business-health-dashboard"]') as HTMLIFrameElement;
+    if (iframe) {
+      iframe.src = iframe.src;
+    }
+  };
+
   return (
     <div className="w-full bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
       {/* Header */}

@@ -15,6 +15,7 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
 import InteractiveFilters from '@/components/filters/InteractiveFilters';
 import ExecutiveKPICards from '@/components/kpi-cards/ExecutiveKPICards';
 import StreamlitEmbed from '@/components/streamlit/StreamlitEmbed';
+import LocalStreamlitEmbed from '@/components/streamlit/LocalStreamlitEmbed';
 
 // Import services and types
 import { mockAPI } from '@/services/mock-api';

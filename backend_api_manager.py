@@ -21,13 +21,13 @@ class BackendAPIManager:
     
     def __init__(self):
         self.api_endpoints = [
-            "https://business-health-dashboard-1.onrender.com",  # Current Render.com backend
-            "https://business-health-dashboard.vercel.app",
-            "https://executive-dashboard.vercel.app", 
+            "https://business-health-dashboard-1.onrender.com",  # Current Render.com backend - first priority
+            "http://localhost:8501",  # Local Streamlit
             "http://localhost:8081",  # Updated to working port
             "http://localhost:8080",
             "http://localhost:3000",
-            "http://localhost:8501"
+            "https://executive-dashboard.vercel.app", 
+            "https://business-health-dashboard.vercel.app",
         ]
         self.neubyte_endpoints = [
             "https://api.neubyte.tech",
