@@ -147,13 +147,19 @@ def setup_api_endpoints():
     """Setup API endpoints for Streamlit"""
     
     # Handle API requests based on query parameters
-    query_params = st.query_params
+    # Use st.experimental_get_query_params() for older Streamlit versions
+    try:
+        query_params = st.query_params
+    except AttributeError:
+        # Fallback for older Streamlit versions
+        query_params = st.experimental_get_query_params()
     
     # Check if this is an API request
-    if 'api' in st.query_params.get('endpoint', ''):
-        endpoint = st.query_params.get('endpoint', '')
-        
+    if 'api' in str(query_params):
         try:
+            # Determine endpoint from query params or path
+            endpoint = query_params.get('endpoint', [''])[0] if isinstance(query_params.get('endpoint', []), list) else query_params.get('endpoint', '')
+            
             if endpoint == 'health':
                 response = handle_api_health()
             elif endpoint == 'dashboard/complete':
