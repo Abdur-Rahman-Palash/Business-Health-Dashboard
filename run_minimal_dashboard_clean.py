@@ -18,18 +18,6 @@ from client_manager import ClientManager, render_client_manager_ui
 from file_upload_manager import FileUploadManager, file_upload_manager
 from advanced_file_analyzer import advanced_file_analyzer
 
-# Check environment and initialize accordingly
-import os
-is_production = os.environ.get('RENDER_SERVICE_ID') or 'onrender.com' in os.environ.get('HOSTNAME', '')
-
-if is_production:
-    # Initialize production environment to fix 403 errors
-    from production_fix import init_production_environment
-    init_production_environment()
-else:
-    # Local development - full functionality
-    pass
-
 # Initialize session state components
 def initialize_components():
     """Initialize all dashboard components"""

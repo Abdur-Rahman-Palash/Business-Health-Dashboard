@@ -35,37 +35,6 @@ class FileUploadManager:
         }
         self.client_data_dir = "client_uploads"
         self.ensure_upload_dir()
-        
-        # Check if running in production (Render.com)
-        self.is_production = self._is_production_environment()
-        
-        # Initialize upload fixes only for production
-        if self.is_production:
-            from production_fix import init_production_environment
-            init_production_environment()
-        else:
-            from fix_streamlit_upload import init_upload_fixes
-            init_upload_fixes()
-    
-    def _is_production_environment(self):
-        """Check if running in production environment"""
-        import os
-        # Check for Render.com environment
-        render_service_id = os.environ.get('RENDER_SERVICE_ID')
-        hostname = os.environ.get('HOSTNAME', '')
-        environment = os.environ.get('ENVIRONMENT')
-        
-        # More specific checks
-        if render_service_id and render_service_id != 'Not Set':
-            return True
-        
-        if 'onrender.com' in hostname:
-            return True
-        
-        if environment == 'production':
-            return True
-        
-        return False
     
     def ensure_upload_dir(self):
         """Ensure upload directory exists"""
@@ -75,13 +44,6 @@ class FileUploadManager:
     def render_file_upload_ui(self, client_name: str = None):
         """Render enhanced file upload interface"""
         
-        if self.is_production:
-            # Show upload disabled message for production
-            from production_fix import show_production_message
-            show_production_message()
-            return
-        
-        # Full upload functionality for local development
         st.header("📁 Advanced Client Data Upload")
         st.write("Upload your business data files for AI-powered comprehensive analysis and decision making")
         
@@ -96,87 +58,87 @@ class FileUploadManager:
             col1, col2 = st.columns(2)
             
             with col1:
-                # CSV Upload - Using safe upload
+                # CSV Upload
                 st.subheader("📈 Upload CSV Data")
-                csv_upload = safe_file_upload(
+                csv_file = st.file_uploader(
                     "📈 Upload CSV Data (Sales, Customers, etc.)",
                     type=['csv'],
                     key=f"csv_{client_name}",
                     help="Upload sales data, customer data, financial data in CSV format"
                 )
                 
-                if csv_upload and csv_upload['success']:
+                if csv_file:
                     if st.button("📊 Advanced CSV Analysis", key=f"process_csv_{client_name}"):
                         with st.spinner("Performing advanced CSV analysis..."):
-                            result = process_file_locally(csv_upload['file'], 'csv', client_name)
+                            result = self.process_uploaded_file(csv_file, client_name, 'csv')
                             if result['success']:
-                                st.success(f"✅ CSV Analysis Complete - {result.get('rows', 0)} rows, {result.get('columns', 0)} columns")
+                                st.success(f"✅ {result['message']}")
                                 self.display_advanced_data_summary(result['data'], 'CSV')
                             else:
-                                st.error(f"❌ CSV Analysis Failed: {result.get('error', 'Unknown error')}")
+                                st.error(f"❌ {result['error']}")
             
             with col2:
-                # Excel Upload - Using safe upload
+                # Excel Upload
                 st.subheader("📊 Upload Excel Files")
-                excel_upload = safe_file_upload(
+                excel_file = st.file_uploader(
                     "📊 Upload Excel Files",
                     type=['xlsx', 'xls'],
                     key=f"excel_{client_name}",
                     help="Upload financial reports, sales data in Excel format"
                 )
                 
-                if excel_upload and excel_upload['success']:
+                if excel_file:
                     if st.button("📊 Advanced Excel Analysis", key=f"process_excel_{client_name}"):
                         with st.spinner("Performing advanced Excel analysis..."):
-                            result = process_file_locally(excel_upload['file'], 'xlsx', client_name)
+                            result = self.process_uploaded_file(excel_file, client_name, 'excel')
                             if result['success']:
-                                st.success(f"✅ Excel Analysis Complete - {result.get('rows', 0)} rows, {result.get('columns', 0)} columns")
+                                st.success(f"✅ {result['message']}")
                                 self.display_advanced_data_summary(result['data'], 'Excel')
                             else:
-                                st.error(f"❌ Excel Analysis Failed: {result.get('error', 'Unknown error')}")
+                                st.error(f"❌ {result['error']}")
         
         with tab2:
             col1, col2 = st.columns(2)
             
             with col1:
-                # PDF Upload - Using safe upload
+                # PDF Upload
                 st.subheader("📄 Upload PDF Reports")
-                pdf_upload = safe_file_upload(
+                pdf_file = st.file_uploader(
                     "📄 Upload PDF Reports & Documents",
                     type=['pdf'],
                     key=f"pdf_{client_name}",
                     help="Upload business reports, financial statements, contracts in PDF format"
                 )
                 
-                if pdf_upload and pdf_upload['success']:
+                if pdf_file:
                     if st.button("📄 Advanced PDF Analysis", key=f"process_pdf_{client_name}"):
                         with st.spinner("Performing advanced PDF analysis..."):
-                            result = process_file_locally(pdf_upload['file'], 'pdf', client_name)
+                            result = self.process_uploaded_file(pdf_file, client_name, 'pdf')
                             if result['success']:
-                                st.success(f"✅ PDF Analysis Complete")
+                                st.success(f"✅ {result['message']}")
                                 self.display_advanced_data_summary(result['data'], 'PDF')
                             else:
-                                st.error(f"❌ PDF Analysis Failed: {result.get('error', 'Unknown error')}")
+                                st.error(f"❌ {result['error']}")
             
             with col2:
-                # Text Upload - Using safe upload
+                # Text Upload
                 st.subheader("📝 Upload Text Files")
-                txt_upload = safe_file_upload(
+                txt_file = st.file_uploader(
                     "📝 Upload Text Files (Notes, Reports)",
                     type=['txt'],
                     key=f"txt_{client_name}",
                     help="Upload meeting notes, reports, text documents"
                 )
                 
-                if txt_upload and txt_upload['success']:
+                if txt_file:
                     if st.button("📝 Advanced Text Analysis", key=f"process_txt_{client_name}"):
                         with st.spinner("Performing advanced text analysis..."):
-                            result = process_file_locally(txt_upload['file'], 'txt', client_name)
+                            result = self.process_uploaded_file(txt_file, client_name, 'txt')
                             if result['success']:
-                                st.success(f"✅ Text Analysis Complete - {result.get('characters', 0)} characters")
+                                st.success(f"✅ {result['message']}")
                                 self.display_advanced_data_summary(result['data'], 'Text')
                             else:
-                                st.error(f"❌ Text Analysis Failed: {result.get('error', 'Unknown error')}")
+                                st.error(f"❌ {result['error']}")
         
         with tab3:
             st.subheader("🔧 Advanced Business Formats")
