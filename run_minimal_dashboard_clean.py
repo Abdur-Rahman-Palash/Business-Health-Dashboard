@@ -225,29 +225,36 @@ def main():
                     st.session_state.current_client
                 )
         else:
-            # Auto-generated fallback with AI decisions
-            st.session_state.dashboard_data = st.session_state.api_manager._generate_fallback_data()
-            # Add AI decisions to fallback data
-            try:
-                ai_decisions = decision_engine.analyze_business_health({
-                    'kpis': [
-                        {'name': 'Revenue', 'value': 850000, 'change': -5.2},
-                        {'name': 'Customer Satisfaction', 'value': 75, 'change': -3.1},
-                        {'name': 'Operational Efficiency', 'value': 68, 'change': -2.5},
-                        {'name': 'Market Share', 'value': 22, 'change': -1.8}
-                    ],
-                    'business_health_score': {
-                        'financial': 45,
-                        'customer': 65,
-                        'operational': 55,
-                        'overall': 55
-                    }
-                })
-                st.session_state.dashboard_data['ai_decisions'] = ai_decisions
-                st.session_state.dashboard_data['has_decisions'] = True
-                st.session_state.dashboard_data['status'] = 'success'
-            except Exception as e:
-                st.error(f"AI decision generation failed: {e}")
+            # Check if uploaded data is available
+            if st.session_state.get('has_uploaded_data'):
+                with st.spinner("🔄 Processing uploaded file data..."):
+                    st.session_state.dashboard_data = st.session_state.api_manager.get_comprehensive_data(
+                        st.session_state.current_client
+                    )
+            else:
+                # Auto-generated fallback with AI decisions
+                st.session_state.dashboard_data = st.session_state.api_manager._generate_fallback_data()
+                # Add AI decisions to fallback data
+                try:
+                    ai_decisions = decision_engine.analyze_business_health({
+                        'kpis': [
+                            {'name': 'Revenue', 'value': 850000, 'change': -5.2},
+                            {'name': 'Customer Satisfaction', 'value': 75, 'change': -3.1},
+                            {'name': 'Operational Efficiency', 'value': 68, 'change': -2.5},
+                            {'name': 'Market Share', 'value': 22, 'change': -1.8}
+                        ],
+                        'business_health_score': {
+                            'financial': 45,
+                            'customer': 65,
+                            'operational': 55,
+                            'overall': 55
+                        }
+                    })
+                    st.session_state.dashboard_data['ai_decisions'] = ai_decisions
+                    st.session_state.dashboard_data['has_decisions'] = True
+                    st.session_state.dashboard_data['status'] = 'success'
+                except Exception as e:
+                    st.error(f"AI decision generation failed: {e}")
         
         data = st.session_state.dashboard_data
         

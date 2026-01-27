@@ -12,8 +12,9 @@ from typing import Dict, List, Optional, Tuple
 from datetime import datetime, timedelta
 import time
 
-# Import decision engine
+# Import decision engine and streamlit
 from decision_engine import decision_engine
+import streamlit as st
 
 class BackendAPIManager:
     """Manages automatic backend API detection and data insertion"""
@@ -74,6 +75,36 @@ class BackendAPIManager:
     
     def get_comprehensive_data(self, client_name: str = None) -> Dict:
         """Get comprehensive data with automatic decision making"""
+        
+        # Check if uploaded data is available in session state
+        if hasattr(st, 'session_state') and st.session_state.get('has_uploaded_data'):
+            processed_data = st.session_state.get('processed_file_data', {})
+            
+            if processed_data and processed_data.get('status') == 'success':
+                # Use uploaded file data for decisions
+                try:
+                    decisions = decision_engine.analyze_business_health(processed_data)
+                    
+                    return {
+                        'status': 'success',
+                        'source': 'uploaded_file',
+                        'data': {
+                            'kpis': processed_data.get('kpis', []),
+                            'business_health_score': processed_data.get('business_health_score', {}),
+                            'insights': processed_data.get('insights', []),
+                            'recommendations': processed_data.get('insights', []),  # Use insights as recommendations
+                            'last_updated': processed_data.get('processed_at', datetime.now().isoformat())
+                        },
+                        'ai_decisions': decisions,
+                        'has_decisions': True,
+                        'decision_generated_at': datetime.now().isoformat(),
+                        'file_info': {
+                            'filename': processed_data.get('file_type', 'unknown'),
+                            'processed_at': processed_data.get('processed_at')
+                        }
+                    }
+                except Exception as e:
+                    st.error(f"Error generating decisions from uploaded data: {e}")
         
         # Get base data
         data = self.get_data(client_name)

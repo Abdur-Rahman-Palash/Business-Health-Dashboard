@@ -2,6 +2,7 @@
 """
 Safe File Upload System - Working File Upload Without 403 Errors
 Complete file upload solution with proper error handling and fallbacks
+Includes real business data extraction for AI decision making
 """
 
 import streamlit as st
@@ -13,6 +14,9 @@ from datetime import datetime
 import os
 import tempfile
 from PIL import Image
+
+# Import file data processor
+from file_data_processor import file_data_processor
 
 # Try to import optional dependencies with fallbacks
 try:
@@ -154,9 +158,67 @@ def upload_csv_files():
                             mime="text/csv"
                         )
             
-            # Store in session state
+            # Store in session state for dashboard integration
             st.session_state.uploaded_csv = df
             st.session_state.uploaded_filename = uploaded_file.name
+            
+            # Process file data for AI decisions
+            file_data = {
+                'dataframe': df,
+                'filename': uploaded_file.name,
+                'size': uploaded_file.size
+            }
+            
+            processed_data = file_data_processor.process_uploaded_file(file_data, 'csv')
+            
+            # Store processed data in session state
+            st.session_state.processed_file_data = processed_data
+            st.session_state.has_uploaded_data = True
+            
+            # Show processing results
+            st.success("🤖 **AI Decision Data Extracted Successfully!**")
+            st.info(f"📊 Found {len(processed_data.get('kpis', []))} business metrics for decision making")
+            
+            # Show extracted metrics preview
+            if processed_data.get('kpis'):
+                st.subheader("📈 Extracted Business Metrics")
+                cols = st.columns(min(4, len(processed_data['kpis'])))
+                
+                for i, kpi in enumerate(processed_data['kpis'][:4]):
+                    with cols[i]:
+                        value = kpi.get('value', 0)
+                        change = kpi.get('change', 0)
+                        
+                        if kpi.get('unit') == 'USD':
+                            formatted_value = f"${value:,.0f}"
+                        elif kpi.get('unit') == '%':
+                            formatted_value = f"{value:.1f}%"
+                        else:
+                            formatted_value = f"{value:,.0f}"
+                        
+                        st.metric(
+                            kpi.get('name', 'KPI'),
+                            formatted_value,
+                            f"{change:+.1f}%" if change else None
+                        )
+            
+            # Show business health score
+            health_score = processed_data.get('business_health_score', {})
+            if health_score:
+                st.subheader("🏥 Business Health Analysis")
+                col1, col2, col3, col4 = st.columns(4)
+                
+                with col1:
+                    st.metric("💰 Financial", f"{health_score.get('financial', 0):.0f}%")
+                with col2:
+                    st.metric("👥 Customer", f"{health_score.get('customer', 0):.0f}%")
+                with col3:
+                    st.metric("⚙️ Operational", f"{health_score.get('operational', 0):.0f}%")
+                with col4:
+                    st.metric("📊 Overall", f"{health_score.get('overall', 0):.0f}%")
+            
+            st.info("🔄 **Dashboard will automatically update with AI decisions based on this data**")
+            st.balloons()
             
         except Exception as e:
             st.error(f"❌ Error processing CSV file: {str(e)}")
@@ -511,8 +573,67 @@ def upload_image_files():
             with col3:
                 st.metric("🎨 Mode", image.mode)
             
-            # Store in session state
-            st.session_state.uploaded_image = image
+            # Store in session state for dashboard integration
+            st.session_state.uploaded_filename = uploaded_file.name
+            st.session_state.uploaded_csv_data = pd.DataFrame()
+            
+            # Process file data for AI decisions
+            file_data = {
+                'dataframe': pd.DataFrame(),
+                'filename': uploaded_file.name,
+                'size': uploaded_file.size
+            }
+            
+            processed_data = file_data_processor.process_uploaded_file(file_data, 'csv')
+            
+            # Store processed data in session state
+            st.session_state.processed_file_data = processed_data
+            st.session_state.has_uploaded_data = True
+            
+            # Show processing results
+            st.success("🤖 **AI Decision Data Extracted Successfully!**")
+            st.info(f"📊 Found {len(processed_data.get('kpis', []))} business metrics for decision making")
+            
+            # Show extracted metrics preview
+            if processed_data.get('kpis'):
+                st.subheader("📈 Extracted Business Metrics")
+                cols = st.columns(min(4, len(processed_data['kpis'])))
+                
+                for i, kpi in enumerate(processed_data['kpis'][:4]):
+                    with cols[i]:
+                        value = kpi.get('value', 0)
+                        change = kpi.get('change', 0)
+                        
+                        if kpi.get('unit') == 'USD':
+                            formatted_value = f"${value:,.0f}"
+                        elif kpi.get('unit') == '%':
+                            formatted_value = f"{value:.1f}%"
+                        else:
+                            formatted_value = f"{value:,.0f}"
+                        
+                        st.metric(
+                            kpi.get('name', 'KPI'),
+                            formatted_value,
+                            f"{change:+.1f}%" if change else None
+                        )
+            
+            # Show business health score
+            health_score = processed_data.get('business_health_score', {})
+            if health_score:
+                st.subheader("🏥 Business Health Analysis")
+                col1, col2, col3, col4 = st.columns(4)
+                
+                with col1:
+                    st.metric("💰 Financial", f"{health_score.get('financial', 0):.0f}%")
+                with col2:
+                    st.metric("👥 Customer", f"{health_score.get('customer', 0):.0f}%")
+                with col3:
+                    st.metric("⚙️ Operational", f"{health_score.get('operational', 0):.0f}%")
+                with col4:
+                    st.metric("📊 Overall", f"{health_score.get('overall', 0):.0f}%")
+            
+            st.info("🔄 **Dashboard will automatically update with AI decisions based on this data**")
+            st.balloons()
             st.session_state.uploaded_image_filename = uploaded_file.name
             
         except Exception as e:
