@@ -10,7 +10,7 @@ interface StreamlitEmbedProps {
 }
 
 const StreamlitEmbed: React.FC<StreamlitEmbedProps> = ({
-  streamlitUrl = 'https://business-health-dashboard-production.up.railway.app',
+  streamlitUrl = 'https://business-health-dashboard-1.onrender.com',
   height = '800px',
   showControls = true
 }) => {

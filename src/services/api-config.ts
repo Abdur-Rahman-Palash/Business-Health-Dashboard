@@ -12,9 +12,9 @@ export const API_CONFIG = {
     timeout: 10000,
   },
   
-  // Production with separate backend (Railway)
+  // Production with separate backend (Render)
   production: {
-    baseURL: 'https://executive-backend-production.up.railway.app',
+    baseURL: 'https://business-health-dashboard-1.onrender.com',
     timeout: 10000,
   },
   
@@ -32,6 +32,7 @@ const getEnvironment = (): keyof typeof API_CONFIG => {
     
     if (hostname === 'localhost') return 'development';
     if (hostname.includes('vercel.app')) return 'vercel';
+    if (hostname.includes('onrender.com')) return 'production';
     if (hostname.includes('executive-dashboard.com')) return 'production';
     return 'hostinger'; // Default for other domains
   }
