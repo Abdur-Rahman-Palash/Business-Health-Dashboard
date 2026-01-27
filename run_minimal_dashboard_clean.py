@@ -168,9 +168,15 @@ def main():
     elif st.session_state.get('show_file_upload', False):
         # File Upload Section
         if st.session_state.current_client:
-            st.session_state.file_upload_manager.render_file_upload_ui(st.session_state.current_client)
+            st.header("📁 Multi-Format Data Processor")
+            st.write("Process CSV, PDF, TXT, JSON, XML, Excel data without file upload")
+            st.success("✅ All Formats Supported - No Upload Required!")
             
-            if st.button(" Back to Dashboard"):
+            # Call the multi-format processor
+            from multi_format_processor import multi_format_processor
+            multi_format_processor()
+            
+            if st.button("← Back to Dashboard"):
                 st.session_state.show_file_upload = False
                 st.rerun()
         else:
