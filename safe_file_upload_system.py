@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Safe File Upload System - Working File Upload Without 403 Errors
-Complete file upload solution with proper error handling
+Complete file upload solution with proper error handling and fallbacks
 """
 
 import streamlit as st
@@ -13,8 +13,21 @@ from datetime import datetime
 import os
 import tempfile
 from PIL import Image
-import PyPDF2
-import docx
+
+# Try to import optional dependencies with fallbacks
+try:
+    import PyPDF2
+    PDF_SUPPORT = True
+except ImportError:
+    PDF_SUPPORT = False
+    st.warning("⚠️ PDF support limited - PyPDF2 not installed. Text extraction will be basic.")
+
+try:
+    import docx
+    DOCX_SUPPORT = True
+except ImportError:
+    DOCX_SUPPORT = False
+    st.warning("⚠️ Word document support limited - python-docx not installed.")
 
 def safe_file_upload_system():
     """Complete safe file upload system"""
@@ -153,6 +166,9 @@ def upload_pdf_files():
     """Upload and process PDF files"""
     st.subheader("📄 PDF File Upload")
     
+    if not PDF_SUPPORT:
+        st.warning("⚠️ PDF processing is limited due to missing dependencies. Basic file info will be shown.")
+    
     uploaded_file = st.file_uploader(
         "Choose PDF file",
         type=['pdf'],
@@ -161,45 +177,65 @@ def upload_pdf_files():
     
     if uploaded_file is not None:
         try:
-            # Read PDF file
-            pdf_reader = PyPDF2.PdfReader(uploaded_file)
-            text_content = ""
-            
-            for page in pdf_reader.pages:
-                text_content += page.extract_text()
-            
             st.success(f"✅ PDF file uploaded successfully!")
-            st.info(f"📄 File: {uploaded_file.name} | Pages: {len(pdf_reader.pages)} | Size: {uploaded_file.size / 1024:.2f} KB")
+            st.info(f"📄 File: {uploaded_file.name} | Size: {uploaded_file.size / 1024:.2f} KB")
             
-            # Show extracted text
-            st.subheader("📋 Extracted Text")
-            st.text_area("PDF Content", text_content, height=300)
+            if PDF_SUPPORT:
+                # Read PDF file
+                pdf_reader = PyPDF2.PdfReader(uploaded_file)
+                text_content = ""
+                
+                for page in pdf_reader.pages:
+                    text_content += page.extract_text()
+                
+                st.info(f"📄 Pages: {len(pdf_reader.pages)}")
+                
+                # Show extracted text
+                st.subheader("📋 Extracted Text")
+                st.text_area("PDF Content", text_content, height=300)
+                
+                # Text analysis
+                st.subheader("📊 Text Analysis")
+                
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("📝 Characters", len(text_content))
+                with col2:
+                    st.metric("📄 Words", len(text_content.split()))
+                with col3:
+                    st.metric("📋 Lines", len(text_content.splitlines()))
+                
+                # Download extracted text
+                st.subheader("💾 Download Options")
+                
+                if st.button("📥 Download Extracted Text"):
+                    st.download_button(
+                        label="Download Text",
+                        data=text_content,
+                        file_name=f"extracted_{uploaded_file.name.replace('.pdf', '.txt')}",
+                        mime="text/plain"
+                    )
+                
+                # Store in session state
+                st.session_state.uploaded_pdf_text = text_content
+            else:
+                # Fallback: Show file info only
+                st.subheader("📋 File Information")
+                st.write(f"📄 File Name: {uploaded_file.name}")
+                st.write(f"📊 File Size: {uploaded_file.size / 1024:.2f} KB")
+                st.write("⚠️ Full PDF processing requires PyPDF2 library installation.")
+                st.write("💡 You can still download the file for local processing.")
+                
+                # Download option
+                if st.button("📥 Download Original PDF"):
+                    st.download_button(
+                        label="Download PDF",
+                        data=uploaded_file.getvalue(),
+                        file_name=uploaded_file.name,
+                        mime="application/pdf"
+                    )
             
-            # Text analysis
-            st.subheader("📊 Text Analysis")
-            
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("📝 Characters", len(text_content))
-            with col2:
-                st.metric("📄 Words", len(text_content.split()))
-            with col3:
-                st.metric("📋 Lines", len(text_content.splitlines()))
-            
-            # Download extracted text
-            st.subheader("💾 Download Options")
-            
-            if st.button("📥 Download Extracted Text"):
-                st.download_button(
-                    label="Download Text",
-                    data=text_content,
-                    file_name=f"extracted_{uploaded_file.name.replace('.pdf', '.txt')}",
-                    mime="text/plain"
-                )
-            
-            # Store in session state
-            st.session_state.uploaded_pdf_text = text_content
             st.session_state.uploaded_pdf_filename = uploaded_file.name
             
         except Exception as e:
@@ -487,6 +523,9 @@ def upload_word_files():
     """Upload and process Word documents"""
     st.subheader("📄 Word Document Upload")
     
+    if not DOCX_SUPPORT:
+        st.warning("⚠️ Word document processing is limited due to missing dependencies. Basic file info will be shown.")
+    
     uploaded_file = st.file_uploader(
         "Choose Word document",
         type=['docx'],
@@ -495,45 +534,65 @@ def upload_word_files():
     
     if uploaded_file is not None:
         try:
-            # Read Word document
-            doc = docx.Document(uploaded_file)
-            text_content = ""
-            
-            for paragraph in doc.paragraphs:
-                text_content += paragraph.text + "\n"
-            
             st.success(f"✅ Word document uploaded successfully!")
-            st.info(f"📄 File: {uploaded_file.name} | Paragraphs: {len(doc.paragraphs)} | Size: {uploaded_file.size / 1024:.2f} KB")
+            st.info(f"📄 File: {uploaded_file.name} | Size: {uploaded_file.size / 1024:.2f} KB")
             
-            # Show extracted text
-            st.subheader("📋 Extracted Text")
-            st.text_area("Document Content", text_content, height=300)
+            if DOCX_SUPPORT:
+                # Read Word document
+                doc = docx.Document(uploaded_file)
+                text_content = ""
+                
+                for paragraph in doc.paragraphs:
+                    text_content += paragraph.text + "\n"
+                
+                st.info(f"📄 Paragraphs: {len(doc.paragraphs)}")
+                
+                # Show extracted text
+                st.subheader("📋 Extracted Text")
+                st.text_area("Document Content", text_content, height=300)
+                
+                # Text analysis
+                st.subheader("📊 Text Analysis")
+                
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("📝 Characters", len(text_content))
+                with col2:
+                    st.metric("📄 Words", len(text_content.split()))
+                with col3:
+                    st.metric("📋 Lines", len(text_content.splitlines()))
+                
+                # Download extracted text
+                st.subheader("💾 Download Options")
+                
+                if st.button("📥 Download Extracted Text"):
+                    st.download_button(
+                        label="Download Text",
+                        data=text_content,
+                        file_name=f"extracted_{uploaded_file.name.replace('.docx', '.txt')}",
+                        mime="text/plain"
+                    )
+                
+                # Store in session state
+                st.session_state.uploaded_word_text = text_content
+            else:
+                # Fallback: Show file info only
+                st.subheader("📋 File Information")
+                st.write(f"📄 File Name: {uploaded_file.name}")
+                st.write(f"📊 File Size: {uploaded_file.size / 1024:.2f} KB")
+                st.write("⚠️ Full Word document processing requires python-docx library installation.")
+                st.write("💡 You can still download the file for local processing.")
+                
+                # Download option
+                if st.button("📥 Download Original Document"):
+                    st.download_button(
+                        label="Download Document",
+                        data=uploaded_file.getvalue(),
+                        file_name=uploaded_file.name,
+                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    )
             
-            # Text analysis
-            st.subheader("📊 Text Analysis")
-            
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("📝 Characters", len(text_content))
-            with col2:
-                st.metric("📄 Words", len(text_content.split()))
-            with col3:
-                st.metric("📋 Lines", len(text_content.splitlines()))
-            
-            # Download extracted text
-            st.subheader("💾 Download Options")
-            
-            if st.button("📥 Download Extracted Text"):
-                st.download_button(
-                    label="Download Text",
-                    data=text_content,
-                    file_name=f"extracted_{uploaded_file.name.replace('.docx', '.txt')}",
-                    mime="text/plain"
-                )
-            
-            # Store in session state
-            st.session_state.uploaded_word_text = text_content
             st.session_state.uploaded_word_filename = uploaded_file.name
             
         except Exception as e:
