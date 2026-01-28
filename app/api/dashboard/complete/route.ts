@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-static';
-
 // Mock data for dashboard
 const mockDashboardData = {
   kpis: [

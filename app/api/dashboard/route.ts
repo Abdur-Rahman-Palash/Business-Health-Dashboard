@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-static';
-
 export async function GET() {
   try {
     return NextResponse.json({
@@ -31,7 +29,7 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
     
-    // Simple language detection for static export
+    // Simple language detection for serverless
     const companyName = data.company?.name || '';
     const isBangladeshi = companyName.toLowerCase().includes('bangladesh') || 
                          companyName.toLowerCase().includes('dhaka') ||

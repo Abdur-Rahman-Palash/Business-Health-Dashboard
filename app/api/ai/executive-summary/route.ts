@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-static';
-
 // Mock executive summary data
 const mockExecutiveSummary = {
   overall_health: 'good',
