@@ -19,12 +19,6 @@
       "dest": "/out/$1"
     }
   ],
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 10,
-      "memory": 512
-    }
-  },
   "env": {
     "PYTHON_VERSION": "3.12"
   }
