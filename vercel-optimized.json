@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.12",
+        "maxLambdaSize": "50mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.py"
+    }
+  ],
+  "functions": {
+    "api/**/*.py": {
+      "maxDuration": 10,
+      "memory": 512
+    }
+  },
+  "env": {
+    "PYTHON_VERSION": "3.12"
+  },
+  "build": {
+    "env": {
+      "PYTHONPATH": "$PYTHONPATH:/var/task"
+    }
+  }
+}
