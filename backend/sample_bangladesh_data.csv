@@ -1,0 +1,21 @@
+company_name,industry,employee_count,revenue_bdt,expenses_bdt,customers,new_customers,churned_customers,date
+"ABC Garments Ltd","Garments & Textile",250,45000000,38000000,150,12,3,2024-01-01
+"Tech Solutions BD","IT Services",45,8500000,6200000,85,8,1,2024-01-01
+"Bangla Trading Co","Trading & Retail",35,12000000,9500000,450,35,8,2024-01-01
+"Pharma Plus Ltd","Pharmaceuticals",120,28000000,22000000,200,15,4,2024-01-01
+"Dhaka Construction","Construction",80,15000000,13500000,25,3,0,2024-01-01
+"Bengal Telecom","Telecommunications",200,35000000,28000000,50000,5000,800,2024-01-01
+"Agri Farm BD","Agriculture",60,8000000,6500000,120,10,2,2024-01-01
+"Logistics Pro","Transport & Logistics",95,18000000,15500000,180,20,5,2024-01-01
+"ABC Garments Ltd","Garments & Textile",250,48000000,39000000,162,15,3,2024-02-01
+"Tech Solutions BD","IT Services",45,9200000,6800000,93,10,2,2024-02-01
+"Bangla Trading Co","Trading & Retail",35,13500000,10200000,485,40,10,2024-02-01
+"Pharma Plus Ltd","Pharmaceuticals",120,31000000,24500000,215,18,3,2024-02-01
+"Dhaka Construction","Construction",80,16500000,14800000,28,4,1,2024-02-01
+"Bengal Telecom","Telecommunications",200,38000000,30000000,55000,5500,900,2024-02-01
+"Agri Farm BD","Agriculture",60,8800000,7000000,130,12,2,2024-02-01
+"Logistics Pro","Transport & Logistics",95,19500000,16800000,200,22,4,2024-02-01
+"ABC Garments Ltd","Garments & Textile",250,52000000,41000000,177,18,3,2024-03-01
+"Tech Solutions BD","IT Services",45,10500000,7500000,103,12,2,2024-03-01
+"Bangla Trading Co","Trading & Retail",35,15500000,11500000,525,45,12,2024-03-01
+"Pharma Plus Ltd","Pharmaceuticals",120,35000000,27000000,233,20,2,2024-03-01

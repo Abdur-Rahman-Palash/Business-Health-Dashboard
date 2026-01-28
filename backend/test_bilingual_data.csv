@@ -1,0 +1,16 @@
+company_name,email,website,address,phone,revenue,expenses,customers,new_customers,churned_customers,date,industry
+"ABC Garments Ltd","info@abcgarments.com.bd","www.abcgarments.com.bd","Dhaka, Bangladesh","+8801712345678",45000000,38000000,150,12,3,2024-01-01,Garments
+"Tech Solutions BD","contact@techsolutionsbd.com","techsolutionsbd.com","Gulshan, Dhaka","+8801812345678",8500000,6200000,85,8,1,2024-01-01,IT Services
+"Bangla Trading Co","sales@banglatrading.com","www.banglatrading.com.bd","Chittagong, Bangladesh","+8801912345678",12000000,9500000,450,35,8,2024-01-01,Trading
+"Pharma Plus Ltd","info@pharmaplus.com.bd","www.pharmaplus.com.bd","Mirpur, Dhaka","+8801712345679",28000000,22000000,200,15,4,2024-01-01,Pharmaceuticals
+"Dhaka Construction Ltd","projects@dhakacon.com","www.dhakacon.com","Dhanmondi, Dhaka","+8801812345679",15000000,13500000,25,3,0,2024-01-01,Construction
+"Bengal Telecom","support@bengaltelecom.com","www.bengaltelecom.com.bd","Uttara, Dhaka","+8801912345679",35000000,28000000,50000,5000,800,2024-01-01,Telecommunications
+"Agri Farm BD","info@agrifarm.com.bd","www.agrifarm.com.bd","Rajshahi, Bangladesh","+8801712345680",8000000,6500000,120,10,2,2024-01-01,Agriculture
+"Logistics Pro Bangladesh","logistics@logisticspro.com.bd","www.logisticspro.com.bd","Narayanganj, Bangladesh","+8801812345680",18000000,15500000,180,20,5,2024-01-01,Logistics
+"Global Tech Solutions Inc","info@globaltech.com","www.globaltech.com","New York, USA","+12125551234",50000000,35000000,500,45,10,2024-01-01,Technology
+"European Manufacturing GmbH","contact@euro-manufacturing.de","www.euro-manufacturing.de","Berlin, Germany","+493012345678",40000000,30000000,300,25,5,2024-01-01,Manufacturing
+"Asia Pacific Trading Ltd","sales@apactrading.com","www.apactrading.com","Singapore","+6562345678",25000000,18000000,200,18,4,2024-01-01,Trading
+"African Mining Corp","info@africanmining.com","www.africanmining.com","Johannesburg, South Africa","+27111234567",30000000,22000000,150,12,3,2024-01-01,Mining
+"Latin American Retail SA","ventas@latamretail.com","www.latamretail.com","São Paulo, Brazil","+551112345678",20000000,15000000,1000,80,20,2024-01-01,Retail
+"Middle East Oil & Gas","contact@meoilgas.com","www.meoilgas.com","Dubai, UAE","+971412345678",60000000,40000000,80,6,1,2024-01-01,Oil & Gas
+"Canadian Services Corp","info@canadianservices.ca","www.canadianservices.ca","Toronto, Canada","+141612345678",15000000,11000000,200,15,3,2024-01-01,Services
