@@ -2,10 +2,6 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.py",
-      "use": "@vercel/python"
-    },
-    {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -16,7 +12,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/$1.py"
+      "dest": "/app/api/$1"
     },
     {
       "src": "/(.*)",
@@ -24,7 +20,7 @@
     }
   ],
   "functions": {
-    "api/**/*.py": {
+    "app/api/**/*.ts": {
       "maxDuration": 10,
       "memory": 512
     }
